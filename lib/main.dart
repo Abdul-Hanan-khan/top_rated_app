@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:top_rated_app/dummy/controller/get_data_fb.dart';
@@ -22,7 +23,11 @@ void main() async {
   Firebase.initializeApp();
   runApp(
     LocalizedApp(
-      child: MyApp(),
+      child: MediaQuery(
+          data:  MediaQueryData.fromWindow(ui.window),
+          child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: MyApp())),
       // child: TestHome(),
     ),
   );

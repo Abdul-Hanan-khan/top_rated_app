@@ -28,17 +28,11 @@ class ReplyWidget extends StatelessWidget {
           Container(
             width: size.width * 0.75,
             decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    // color: Colors.grey[350],
-                      color: Colors.orange,
-                      blurRadius: 2.0,
-                      offset: Offset(0, 1.0))
-                ],
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white),
+
+                borderRadius: BorderRadius.circular(22.0),
+                color: Colors.grey[600]),
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -48,12 +42,12 @@ class ReplyWidget extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          color: Colors.white),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 5,right: 5),
-                    child: Text(replyMessage),
+                    child: Text(replyMessage,style: TextStyle(color: Colors.white),),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -62,7 +56,7 @@ class ReplyWidget extends StatelessWidget {
                         DateFormat('yyyy-MM-dd, kk:mma')
                             .format(replyDate)
                             .toString(),
-                        style: TextStyle(color: Colors.grey, fontSize: 10),
+                        style: TextStyle(color: Colors.white, fontSize: 10),
                       ),
                     ],
 

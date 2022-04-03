@@ -38,15 +38,12 @@ class MessageWidget extends StatelessWidget {
           ),
           Container(
             width: size.width * 0.75,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  // color: Colors.grey[350],
-                  color: Colors.orange,
-                  blurRadius: 2.0,
-                  offset: Offset(0, 1.0))
-            ], borderRadius: BorderRadius.circular(10.0), color: Colors.white),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(22.0),
+              color: Colors.grey[600],
+            ),
             child: Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 13),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -56,15 +53,17 @@ class MessageWidget extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          color: Colors.white),
                     ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 5, right: 5),
-                    child: Text(commentMessage),
+                    margin: EdgeInsets.only(left: 0, right: 0),
+                    child: Text(commentMessage,style: TextStyle(
+                      color: Colors.white
+                    ),),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -73,10 +72,9 @@ class MessageWidget extends StatelessWidget {
                         DateFormat('yyyy-MM-dd, kk:mma')
                             .format(date)
                             .toString(),
-                        style: TextStyle(color: Colors.grey, fontSize: 10),
+                        style: TextStyle(color: Colors.white, fontSize: 10),
                       ),
                     ],
-
                   ),
                   // Align(
                   //     alignment: Alignment.topRight,
@@ -102,7 +100,10 @@ class MessageWidget extends StatelessWidget {
                   },
                   child: Padding(
                     padding: EdgeInsets.only(top: 4, left: 4),
-                    child: Text('reply',style: TextStyle(fontSize: 15),),
+                    child: Text(
+                      'reply',
+                      style: TextStyle(fontSize: 15,color: Colors.white),
+                    ),
                   ),
                 ),
               ],
@@ -134,8 +135,10 @@ class MessageWidget extends StatelessWidget {
         itemBuilder: (context, snapshot, animation, index) {
           return Padding(
             padding: const EdgeInsets.only(left: 39, right: 39),
-            child: ReplyWidget(snapshot.value['body'],
-                DateTime.parse(snapshot.value['dateTime']),snapshot.value['sender']),
+            child: ReplyWidget(
+                snapshot.value['body'],
+                DateTime.parse(snapshot.value['dateTime']),
+                snapshot.value['sender']),
           );
         },
       ),

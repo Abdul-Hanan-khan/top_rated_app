@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class AlertModel {
-  List<AlertPost> myAlerts;
+  List<AlertPost> myAlerts=<AlertPost>[];
   AlertModel({this.myAlerts});
 
   AlertModel.fromJson(Map<String, dynamic> json) {

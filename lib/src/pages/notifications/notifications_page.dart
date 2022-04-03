@@ -38,7 +38,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
   NotificationsBloc bloc;
 
   String totalComments;
-  String totalLikes;
+  RxString totalLikes='0'.obs;
+  RxString likeStatus = '0'.obs;
 
   // CollectionReference ref = FirebaseFirestore.instance.collection("Users");
   DatabaseReference likesRef;
@@ -108,10 +109,20 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               .child('myAlerts')
                               .child('post-${notification.id}')
                               .child('likes');
+
                           RxInt currentPostIndex=0.obs;
-                         currentPostIndex.value  = dbController.allPosts.value
-                              .indexWhere((element) =>
-                                  element.postID == notification.id);
+                          RxInt currentPostIndexForLikes=0.obs;
+                         currentPostIndex.value  = dbController.allPosts.indexWhere((element) => element.postID == notification.id);
+
+                         RxList allLiked=[].obs;
+                         // dbController.allPosts[currentPostIndex.value].like.forEach((element) {
+                         //   if(element.likeStatus == '1'){
+                         //     allLiked.add(element);
+                         //   }
+                         // });
+                         // allLiked.add(dbController.allPosts[currentPostIndex.value].like.where((value) => value.likeStatus == '1'));
+                         // totalLikes.value=allLiked.length.toString();
+
                           print(currentPostIndex);
 
                           return Stack(
@@ -190,8 +201,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                   .instance
                                                   .reference()
                                                   .child('myAlerts')
-                                                  .child(
-                                                      'post-${notification.id}')
+                                                  .child('post-${notification.id}')
                                                   .child('likes');
 
                                               likeFunction(notification.id);
@@ -207,17 +217,19 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                               width: size.width * 0.2,
                                               padding: EdgeInsets.only(
                                                   top: 5, bottom: 3),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons
-                                                      .thumb_up_alt_rounded),
-                                                  SizedBox(
-                                                    width: 2,
-                                                  ),
-                                                  Center(
-                                                      child: Text("00".tr())),
-                                                ],
+                                              child: Obx(
+                                                ()=> Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    likeStatus.value=='0'?Icon(Icons.thumb_up_alt_outlined) :
+                                                    Icon(Icons.thumb_up_alt_rounded),
+                                                    SizedBox(
+                                                      width: 2,
+                                                    ),
+                                                    Center(
+                                                        child: Text(totalLikes.value==0?"": totalLikes.value.toString())),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -284,30 +296,64 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   Future<dynamic> likeFunction(String notificationId) {
     String likeKey;
+    String likeStatus;
     var exists;
     likesRef.once().then((snapshot) {
-      exists = snapshot.value;
-
+      var data= snapshot.value;
       likeKey = "$notificationId" + "-" + "${user.userId}";
-
-      if (exists == null) {
-        /// create like
-        likesRef.child(likeKey).set({
-          "userId": "${user.userId}",
-          "likeStatus": '1',
-          "notificationId": '$notificationId'
-        });
-      } else {
-        /// update like
-
-        if (exists[likeKey]['likeStatus'] == '0') {
-          likesRef.child(likeKey).update({"likeStatus": '1'});
-        } else {
-          likesRef.child(likeKey).update({"likeStatus": '0'});
+      if(data !=null){
+        likeStatus=data[likeKey]['likeStatus'];
+        if(likeStatus == '0' ){
+          likesRef.child(likeKey).set({
+            "userId": "${user.userId}",
+            "likeStatus": '1',
+            "notificationId": '$notificationId'
+          });
+        }
+        else if(likeStatus == '1' ){
+          likesRef.child(likeKey).remove();
+          // likesRef.child(likeKey).set({
+          //   "userId": "${user.userId}",
+          //   "likeStatus": '0',
+          //   "notificationId": '$notificationId'
+          // });
         }
       }
+
+     else {
+       likesRef.child(likeKey).set({
+         "userId": "${user.userId}",
+         "likeStatus": '1',
+         "notificationId": '$notificationId'
+       });
+     }
+
     });
-    setState(() {});
+
+
+    // likesRef.once().then((snapshot) {
+    //   exists = snapshot.value;
+    //
+    //   likeKey = "$notificationId" + "-" + "${user.userId}";
+    //
+    //   if (exists == null) {
+    //     /// create like
+    //     likesRef.child(likeKey).set({
+    //       "userId": "${user.userId}",
+    //       "likeStatus": '1',
+    //       "notificationId": '$notificationId'
+    //     });
+    //   } else {
+    //     /// update like
+    //
+    //     if (exists[likeKey]['likeStatus'] == '0') {
+    //       likesRef.child(likeKey).set({"likeStatus": '1'});
+    //     } else {
+    //       likesRef.child(likeKey).set({"likeStatus": '0'});
+    //     }
+    //   }
+    // });
+    // setState(() {});
 
     return exists;
   }

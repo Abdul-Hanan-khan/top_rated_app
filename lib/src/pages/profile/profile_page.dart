@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../sdk/constants/app_constants.dart';
 import '../../sdk/constants/dimens.dart';
 import '../../sdk/constants/spacing.dart';
@@ -30,11 +32,22 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _isLoading = false;
   bool _isEditMode = false;
   final ImagePicker _picker = ImagePicker();
+  bool status = false;
 
   @override
   void initState() {
     super.initState();
+
     initBloc();
+  }
+
+  changeLocalityStatus(bool localeStatus) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('localeStatus', localeStatus);
+  }
+  getLocaleStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    status = prefs.getBool('localeStatus');
   }
 
   initBloc() {
@@ -44,6 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
         _isLoading = event;
       });
     });
+
 
     bloc.exception.listen((event) {
       UIUtils.showAdaptiveDialog(_context, "Error", event);
@@ -61,6 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    getLocaleStatus();
     theme = Theme.of(context);
     return Stack(
       children: <Widget>[
@@ -88,11 +103,92 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Stack(
             children: [
+              Positioned(
+                left: 20,
+                child: Container(
+                  height: 20,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.grey[300],
+                  ),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              changeLocalityStatus(false);
+                              status = false;
+                              translator.setNewLanguage(
+                                context,
+                                newLanguage: 'en',
+                                remember: true,
+                                restart: true,
+                              );
+                              print(status);
+                            });
+                          },
+                          child: Container(
+                            width: 45,
+                            height: 20,
+                            decoration: BoxDecoration(
+                                color:
+                                    status ? Colors.transparent : Colors.orange,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Center(
+                                child: Text(
+                              'Eng',
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                            )),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              changeLocalityStatus(true);
+                              status = true;
+                              translator.setNewLanguage(
+                                context,
+                                newLanguage: 'ar',
+                                remember: true,
+                                restart: true,
+                              );
+                              print(status);
+                            });
+                          },
+                          child: Container(
+                            width: 45,
+                            height: 20,
+                            decoration: BoxDecoration(
+                                color: !status
+                                    ? Colors.transparent
+                                    : Colors.orange,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Center(
+                                child: Text('Ar',
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold))),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               Container(
                 padding: EdgeInsets.all(Dimens.margin),
-                margin: EdgeInsets.fromLTRB(Dimens.margin, 60, Dimens.margin, 0),
+                margin:
+                    EdgeInsets.fromLTRB(Dimens.margin, 60, Dimens.margin, 0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(WidgetConstants.cornerRadius),
+                  borderRadius:
+                      BorderRadius.circular(WidgetConstants.cornerRadius),
                   color: theme.colorScheme.surface,
                 ),
                 child: Column(
@@ -103,26 +199,31 @@ class _ProfilePageState extends State<ProfilePage> {
                           return !snapshot.hasData
                               ? SizedBox()
                               : Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     TextButton(
                                       onPressed: () async {
-                                        await pushPage(context, FollowersPage());
+                                        await pushPage(
+                                            context, FollowersPage());
                                       },
-                                      child: Text("Followers".tr()+": ${snapshot.data.followersCount ?? 0}"),
+                                      child: Text("Followers".tr() +
+                                          ": ${snapshot.data.followersCount ?? 0}"),
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        await pushPage(context, FollowersPage(isFollowers: false));
+                                        await pushPage(context,
+                                            FollowersPage(isFollowers: false));
                                       },
-                                      child: Text("Following".tr()+": ${snapshot.data.followingCount ?? 0}"),
+                                      child: Text("Following".tr() +
+                                          ": ${snapshot.data.followingCount ?? 0}"),
                                     ),
                                   ],
                                 );
                         }),
                     SizedBox(height: 25),
                     AppButton(
-                      text: _isEditMode ? "Save".tr() : "Edit Profile".tr() ,
+                      text: _isEditMode ? "Save".tr() : "Edit Profile".tr(),
                       height: 30,
                       foreground: theme.colorScheme.onPrimary,
                       elevation: 0,
@@ -155,14 +256,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 alignment: Alignment.topCenter,
                 child: GestureDetector(
                   onTap: () async {
-                    final image = await _picker.pickImage(source: ImageSource.gallery);
+                    final image =
+                        await _picker.pickImage(source: ImageSource.gallery);
                     if (image != null) {
                       await bloc.updateImage(File(image.path));
                     }
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: theme.backgroundColor, width: 8),
+                        border:
+                            Border.all(color: theme.backgroundColor, width: 8),
                         borderRadius: BorderRadius.circular(70)),
                     child: ClipOval(
                       clipBehavior: Clip.antiAlias,
@@ -256,11 +359,16 @@ class _ProfilePageState extends State<ProfilePage> {
               border: OutlineInputBorder(),
             ),
             controller: snapshot.hasData
-                ? TextEditingController(text: DateUtil.getFormattedDate(snapshot.data, "dd-MM-yyyy"))
+                ? TextEditingController(
+                    text:
+                        DateUtil.getFormattedDate(snapshot.data, "dd-MM-yyyy"))
                 : null,
             onTap: () async {
               final date = await showDatePicker(
-                  context: context, initialDate: DateTime(1980), firstDate: DateTime(1960), lastDate: DateTime.now());
+                  context: context,
+                  initialDate: DateTime(1980),
+                  firstDate: DateTime(1960),
+                  lastDate: DateTime.now());
               if (date != null) {
                 bloc.onDobChanged(date);
               }

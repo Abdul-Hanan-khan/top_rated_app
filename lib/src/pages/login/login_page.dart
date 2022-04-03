@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:top_rated_app/src/pages/verify_code/verify_code_page.dart';
 import 'package:top_rated_app/src/sdk/networking/auth_manager.dart';
 import 'package:top_rated_app/src/sdk/utils/widget_utils.dart';
@@ -30,6 +31,11 @@ class _LoginPageState extends State<LoginPage> {
     initBloc();
   }
 
+  setLoacaleStatus()async{
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    prefs.setBool('localeStatus', false);
+  }
+
   initBloc() {
     bloc = new LoginBloc();
     bloc.isLoading.listen((event) {
@@ -47,16 +53,21 @@ class _LoginPageState extends State<LoginPage> {
     bloc.loggedUser.listen((isAccountActivated) {
       if (isAccountActivated) {
         if (AuthManager.instance.isUserAccount) {
+          setLoacaleStatus();
           Navigator.of(_context).pushReplacementNamed(Routes.home);
+
         } else {
           Navigator.of(_context).pushReplacementNamed(Routes.vendorHome);
+          setLoacaleStatus();
         }
       } else {
+        setLoacaleStatus();
         Navigator.of(_context).push(getPageRoute((context) => VerifyCodePage()));
       }
     });
 
     bloc.emailNotVerified.listen((event) {
+      setLoacaleStatus();
       if (event) {
         Navigator.of(_context).push(getPageRoute((context) => VerifyCodePage()));
       }
@@ -228,7 +239,9 @@ class _LoginPageState extends State<LoginPage> {
             AdaptiveBottomSheetAction(
               text: "Sign up as User",
               icon: Icons.person,
-              onPressed: () {
+              onPressed: () async {
+                SharedPreferences prefs=await SharedPreferences.getInstance();
+                prefs.setBool('localeStatus', false);
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(Routes.userRegister);
               },

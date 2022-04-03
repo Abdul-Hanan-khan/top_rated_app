@@ -64,8 +64,8 @@ class HomePageState extends State<HomePage> {
         backgroundColor: Colors.green[700],
         child: Icon(Icons.language_outlined,),
         onPressed: (){
-        // Navigator.push(context, MaterialPageRoute(builder: (context)=>TestingClass()));
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>TestHome()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>TestingClass()));
+        // Navigator.push(context, MaterialPageRoute(builder: (context)=>TestHome()));
           // Get.to(TestingClass());
 
         }
