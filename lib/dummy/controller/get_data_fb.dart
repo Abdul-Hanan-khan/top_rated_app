@@ -33,7 +33,6 @@ class MyDatabaseController extends GetxController {
 
       allPosts.clear();
       commData.entries.forEach((element) {
-
         allPosts.add(AlertPost.fromJson(Map<String, dynamic>.from(element.value)));
       });
       print(allPosts);
