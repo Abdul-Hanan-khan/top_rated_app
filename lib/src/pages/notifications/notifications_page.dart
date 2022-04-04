@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:share_plus/share_plus.dart';
@@ -191,6 +192,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         /// like
                                         BouncingAnim(
                                           onPress: () {
+                                            // SystemSound.play(SystemSoundType.click);
+                                            Feedback.forTap(context);
+
                                             likesRef = FirebaseDatabase.instance
                                                 .reference()
                                                 .child('myAlerts')

@@ -14,6 +14,7 @@ class CommentSection extends StatelessWidget {
 
   CommentSection(this.postId);
 
+  ThemeData theme;
   var commentCtr = TextEditingController();
   var repCommentCtr = TextEditingController();
   DatabaseReference commentRef;
@@ -23,8 +24,10 @@ class CommentSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    theme = Theme.of(context);
     return Scaffold(
-        backgroundColor: Colors.grey[800],
+        // backgroundColor: AppColor.secondaryBackground,
+        backgroundColor: theme.backgroundColor,
         // appBar: AppBar(backgroundColor: Colors.grey[400],
         //   title: Text('Comments'.tr()),
         // ),
@@ -37,7 +40,10 @@ class CommentSection extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.topCenter,
-                child: Text('All Comments',style: TextStyle(color: Colors.white),),
+                child: Text(
+                  'All Comments',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
 
               ///all comments
@@ -70,7 +76,14 @@ class CommentSection extends StatelessWidget {
                       width: 15,
                     ),
                     FloatingActionButton(
-                      onPressed: (){sendMessage();},
+                      onPressed: () {
+                        if (commentCtr.text.trim() == '' ||
+                            commentCtr.text.trim().isEmpty ||
+                            commentCtr.text.trim() == null) {
+                        } else {
+                          sendMessage();
+                        }
+                      },
                       child: Icon(
                         Icons.send_rounded,
                         color: Colors.orange[200],
@@ -102,7 +115,7 @@ class CommentSection extends StatelessWidget {
         'dateTime': '${DateTime.now()}',
         'body': '${commentCtr.text.tr()}',
         'commentId': '$commentId',
-        'sender':'${user.firstName+" "+user.lastName??""}'
+        'sender': '${user.firstName + " " + user.lastName ?? ""}'
         // 'sender': 'vendor'
       });
 
@@ -139,10 +152,7 @@ class CommentSection extends StatelessWidget {
           WidgetsBinding.instance
               .addPostFrameCallback((_) => _scrollToBottom());
         }
-        final json = snapshot.value as Map<dynamic, dynamic>;
         print(snapshot.value['body']);
-        // final message = Message.fromJson(json);
-        // return MessageWidget(message.text, message.date);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
