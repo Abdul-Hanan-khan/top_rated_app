@@ -1,21 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:top_rated_app/dummy/controller/get_data_fb.dart';
-import 'package:top_rated_app/dummy/controller/test_home.dart';
 import 'package:top_rated_app/src/pages/login/login_page.dart';
 import 'package:top_rated_app/src/pages/main/main_page.dart';
 import 'package:top_rated_app/src/pages/register/register_page.dart';
-import 'package:top_rated_app/src/pages/splash/splash_page.dart';
-import 'package:top_rated_app/src/pages/vendor_detail/vendor_detail_page.dart';
 import 'package:top_rated_app/src/pages/vendor_main/vendor_main_page.dart';
 import 'package:top_rated_app/src/pages/vendor_register/vendor_register_page.dart';
 import 'package:top_rated_app/src/pages/verify_code/verify_code_page.dart';
 import 'package:top_rated_app/src/services/push_notification_service.dart';
-
 import '../config.dart';
 import '../sdk/constants/app_constants.dart';
 import 'app_provider.dart';
@@ -35,9 +30,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     dbController.getPostData();
-    // dbController.addCommentToFirestore();
-    // dbController.getDataFromFireStore();
-    // dbController.addReplyToFirestore();
     _appBloc = AppBloc.instance;
     PushNotificationService.instance.initialize();
   }

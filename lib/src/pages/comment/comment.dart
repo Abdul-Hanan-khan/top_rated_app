@@ -38,13 +38,6 @@ class CommentSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  'All Comments',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
 
               ///all comments
               Expanded(child: _getMessageList(context)),
@@ -55,7 +48,7 @@ class CommentSection extends StatelessWidget {
                 height: 60,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.grey[400],
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(22)),
                 child: Row(
                   children: <Widget>[
@@ -66,7 +59,7 @@ class CommentSection extends StatelessWidget {
                       child: TextField(
                         controller: commentCtr,
                         decoration: InputDecoration(
-                            fillColor: Colors.grey[400],
+                            fillColor: Colors.white,
                             hintText: "Write comment...",
                             hintStyle: TextStyle(color: Colors.black54),
                             border: InputBorder.none),

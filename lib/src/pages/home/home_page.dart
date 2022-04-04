@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:top_rated_app/dummy/controller/test_home.dart';
+
 
 import 'package:top_rated_app/src/pages/main/main_page.dart';
 import 'package:top_rated_app/testing_class.dart';

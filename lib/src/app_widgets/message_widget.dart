@@ -144,93 +144,6 @@ class MessageWidget extends StatelessWidget {
       ),
     );
   }
-  //
-  // Widget showBottomSheet(BuildContext context1, String postIdForReply,
-  //     String commentToReply, String sender) {
-  //   showModalBottomSheet(
-  //     isScrollControlled: true,
-  //     shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.only(
-  //             topRight: Radius.circular(10), topLeft: Radius.circular(10))),
-  //     context: context1,
-  //     builder: (context) {
-  //       return Form(
-  //         key: key,
-  //         child: SingleChildScrollView(
-  //           child: AnimatedPadding(
-  //               padding: MediaQuery.of(context).viewInsets,
-  //               duration: const Duration(milliseconds: 100),
-  //               curve: Curves.decelerate,
-  //               child: Column(
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 children: [
-  //                   Row(
-  //                     mainAxisSize: MainAxisSize.max,
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Text(
-  //                         'Replying on :   ',
-  //                         style: TextStyle(
-  //                             fontWeight: FontWeight.bold, fontSize: 14),
-  //                       ),
-  //                       Text('${commentToReply}'),
-  //                     ],
-  //                   ),
-  //                   SizedBox(
-  //                     height: 100,
-  //                   ),
-  //                   Container(
-  //                     padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-  //                     height: 60,
-  //                     width: double.infinity,
-  //                     color: Colors.white,
-  //                     child: Row(
-  //                       children: <Widget>[
-  //                         SizedBox(
-  //                           width: 15,
-  //                         ),
-  //                         Expanded(
-  //                           child: TextField(
-  //                             controller: repCommentCtr,
-  //                             decoration: InputDecoration(
-  //                                 hintText: "Write reply...",
-  //                                 hintStyle: TextStyle(color: Colors.black54),
-  //                                 border: InputBorder.none),
-  //                           ),
-  //                         ),
-  //                         SizedBox(
-  //                           width: 15,
-  //                         ),
-  //                         FloatingActionButton(
-  //                           onPressed: () {
-  //                             if (repCommentCtr.text.trim() == '' ||
-  //                                 repCommentCtr.text.trim().isEmpty ||
-  //                                 repCommentCtr.text.trim() == null) {}
-  //                             sendReplyCommentMessage(
-  //                                 context, postIdForReply, sender);
-  //                           },
-  //                           child: Icon(
-  //                             Icons.send,
-  //                             color: Colors.white,
-  //                             size: 18,
-  //                           ),
-  //                           backgroundColor: AppColor.secondaryDark,
-  //                           elevation: 0,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   SizedBox(
-  //                     height: 20,
-  //                   )
-  //                 ],
-  //               )),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
 
   _showReplyDialog(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -273,12 +186,10 @@ class MessageWidget extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      // popPage(context);
+
                       final text = repCommentCtr.text.trim();
                       if (text.isNotEmpty) {
                         sendReplyCommentMessage(context, postID, sender);
-
-                        // bloc.reply(rating.getId(), text);
                       }
                     },
                     child: Text(
@@ -331,7 +242,5 @@ class MessageWidget extends StatelessWidget {
     } on Exception catch (_) {
       print('Failed to reply');
     }
-
-    // commentRef.key;
   }
 }

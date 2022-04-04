@@ -35,16 +35,12 @@ class NotificationsPage extends StatefulWidget {
 class _NotificationsPageState extends State<NotificationsPage> {
   MyDatabaseController dbController = Get.find();
   ThemeData theme;
-  List<Likes> allLikes;
+
   BuildContext _context;
   NotificationsBloc bloc;
 
-  String totalComments;
-  RxInt totalLikes = 0.obs;
-  // RxString likeStatus = '0'.obs;
 
 
-  // CollectionReference ref = FirebaseFirestore.instance.collection("Users");
   DatabaseReference likesRef;
   final user = AuthManager.instance.user;
 
@@ -52,10 +48,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   void initState() {
     super.initState();
 
-    // dbController.getData().then((value) {
-    //
-    // });
-    // getAllLikes();
+
     bloc = new NotificationsBloc();
     bloc.error.listen((event) {
       UIUtils.showAdaptiveDialog(_context, "Error", event);
@@ -124,8 +117,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
                         return Stack(
                           children: [
-                            // getTestAllLikes(),
-                            // _getMessageList(context, notification.id),
                             Card(
                               margin: EdgeInsets.symmetric(
                                   vertical: Dimens.margin_medium),
@@ -201,15 +192,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                 .child(
                                                     'post-${notification.id}')
                                                 .child('likes');
-
                                             likeFunction(notification.id);
-                                            // print(data);
-                                            // if (data == null) {
-                                            //   likesRef.set({
-                                            //     "userId": "${user.userId}",
-                                            //     "likeStatus": likeStatus
-                                            //   });
-                                            // }
                                           },
                                           child: Container(
                                             width: size.width * 0.2,
@@ -354,231 +337,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
       }
     });
 
-    // likesRef.once().then((snapshot) {
-    //   exists = snapshot.value;
-    //
-    //   likeKey = "$notificationId" + "-" + "${user.userId}";
-    //
-    //   if (exists == null) {
-    //     /// create like
-    //     likesRef.child(likeKey).set({
-    //       "userId": "${user.userId}",
-    //       "likeStatus": '1',
-    //       "notificationId": '$notificationId'
-    //     });
-    //   } else {
-    //     /// update like
-    //
-    //     if (exists[likeKey]['likeStatus'] == '0') {
-    //       likesRef.child(likeKey).set({"likeStatus": '1'});
-    //     } else {
-    //       likesRef.child(likeKey).set({"likeStatus": '0'});
-    //     }
-    //   }
-    // });
-    // setState(() {});
 
     return exists;
   }
 
-  displayBottomSheet() {
-    return showModalBottomSheet(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        context: context,
-        isScrollControlled: true,
-        builder: (context) {
-          return FractionallySizedBox(
-            heightFactor: 0.9,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20, left: 10),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ///all comments
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey[300],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Bilal Ahmed'.tr(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              Text(
-                                'very nice chocolate cake. i would like to try this'
-                                    .tr(),
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: Text("15 minutes".tr()),
-                        )
-                      ],
-                    ),
-                  ),
-
-                  /// send message
-                  Container(
-                    padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                    height: 60,
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                hintText: "Write comment ...",
-                                hintStyle: TextStyle(color: Colors.black54),
-                                border: InputBorder.none),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        FloatingActionButton(
-                          onPressed: () {},
-                          child: Icon(
-                            Icons.send,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                          backgroundColor: AppColor.secondaryDark,
-                          elevation: 0,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-// Widget _getMessageList(BuildContext context,String notificationId) {
-//   DatabaseReference commentRef = FirebaseDatabase.instance
-//       .reference()
-//       .child('myAlerts')
-//       .child('${notificationId}')
-//       .child('comments');
-//
-//
-//   Size size = MediaQuery.of(context).size;
-//   commentRef = FirebaseDatabase.instance
-//       .reference()
-//       .child('myAlerts')
-//       .child('${notificationId}')
-//       .child('comments');
-//   return FirebaseAnimatedList(
-//     shrinkWrap: true,
-//     // controller: _scrollController,
-//     query: commentRef,
-//     itemBuilder: (context, snapshot, animation, index) {
-//       totalComments='$index';
-//       final json = snapshot.value as Map<dynamic, dynamic>;
-//       print(snapshot.value['body']);
-//       // final message = Message.fromJson(json);
-//       // return MessageWidget(message.text, message.date);
-//       return Container();
-//     },
-//   );
-// }
-
-// Widget getTestAllLikes() {
-//   List<Likes> workshopList = [];
-//   // List<Map<dynamic,dynamic>> workshopList = [];
-//   final dbRef = FirebaseDatabase.instance.reference().child('myAlerts').child('83').child('likes');
-//   return FutureBuilder(
-//       future: dbRef.once(),
-//       builder: (context,AsyncSnapshot<DataSnapshot> snapshot){
-//         if(snapshot.hasData){
-//           workshopList.clear();
-//
-//           Map<dynamic, dynamic> values = snapshot.data.value;
-//           Likes likes = Likes.fromJson(values['80-23']);
-//           workshopList.add(likes);
-//
-//           print(likes);
-//           print(values);
-//
-//
-//         }
-//         return Container();
-//       }
-//
-//   );
-// }
-
-//
-// Future getAllLikes(String postId) async {
-//   RxList<Like> likesInfo;
-//   // likesInfo.clear();
-//
-//   var databaserRef = FirebaseDatabase.instance
-//       .reference()
-//       .child('myAlerts')
-//       .child('post-81')
-//       .child('likes');
-//   databaserRef.onValue.listen((event) {
-//     Map commData = event.snapshot.value;
-//      likesInfo=<Like>[].obs;
-//     commData.entries.forEach((element) {
-//       likesInfo.add(Like.fromJson(Map<String, dynamic>.from(element.value)));
-//     });
-//
-//     print(likesInfo);
-//
-//   });
-//
-// }
-//
-// Widget _getlikes(BuildContext context,String postId) {
-//   var commentRef;
-//   Size size = MediaQuery.of(context).size;
-//   commentRef = FirebaseDatabase.instance
-//       .reference()
-//       .child('myAlerts')
-//       .child('post-$postId')
-//       .child('likes');
-//   return FirebaseAnimatedList(
-//     shrinkWrap: true,
-//     // controller: _scrollController,
-//     query: commentRef,
-//     itemBuilder: (context, snapshot, animation, index) {
-//
-//       // final json = snapshot.value as Map<dynamic, dynamic>;
-//       print(snapshot.value['likeStatus']);
-//       if(snapshot.value['likeStatus']=='1'){
-//         totalLikes.value=totalLikes.value+1;
-//       }
-//
-//       return Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Container(
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }
 }

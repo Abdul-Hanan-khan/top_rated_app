@@ -5,7 +5,7 @@ import 'dart:ui' as ui;
 
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:top_rated_app/dummy/controller/get_data_fb.dart';
-import 'package:top_rated_app/dummy/controller/test_home.dart';
+
 import 'src/app/app.dart';
 import 'package:get/get.dart';
 import 'src/sdk/utils/notifications_helper.dart';
