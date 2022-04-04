@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -21,14 +22,13 @@ void main() async {
 
   NotificationsHelper.instance.init();
   Firebase.initializeApp();
-  runApp(
-    LocalizedApp(
-      child: MediaQuery(
-          data:  MediaQueryData.fromWindow(ui.window),
-          child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: MyApp())),
-      // child: TestHome(),
-    ),
-  );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]).then((_){
+    runApp(
+      LocalizedApp(
+        child: MyApp(),
+        // child: TestHome(),
+      ),
+    );
+  });
+
 }

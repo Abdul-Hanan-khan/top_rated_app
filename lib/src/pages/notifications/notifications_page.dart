@@ -18,6 +18,7 @@ import 'package:top_rated_app/src/pages/vendor_detail/vendor_detail_page.dart';
 import 'package:top_rated_app/src/sdk/constants/app_constants.dart';
 import 'package:top_rated_app/src/sdk/constants/dimens.dart';
 import 'package:top_rated_app/src/sdk/constants/spacing.dart';
+import 'package:top_rated_app/src/sdk/models/alerts_model_firebase.dart';
 import 'package:top_rated_app/src/sdk/models/likes.dart';
 import 'package:top_rated_app/src/sdk/models/message.dart';
 import 'package:top_rated_app/src/sdk/networking/auth_manager.dart';
@@ -38,8 +39,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
   NotificationsBloc bloc;
 
   String totalComments;
-  RxString totalLikes='0'.obs;
-  RxString likeStatus = '0'.obs;
+  RxInt totalLikes = 0.obs;
+  // RxString likeStatus = '0'.obs;
+
 
   // CollectionReference ref = FirebaseFirestore.instance.collection("Users");
   DatabaseReference likesRef;
@@ -89,6 +91,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   Widget _buildBody(BuildContext context) {
+    RxBool likeStatus=false.obs;
     Size size = MediaQuery.of(context).size;
     return StreamBuilder<List<Message>>(
         stream: bloc.notifications,
@@ -99,218 +102,238 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   : SizedBox()
               : snapshot.data.length == 0
                   ? Center(child: Text("No Notifications".tr()))
-                  :  ListView.builder(
-                        itemCount: snapshot.data.length,
-                        padding: EdgeInsets.all(Dimens.margin),
-                        itemBuilder: (context, index) {
-                          final notification = snapshot.data[index];
-                          likesRef = FirebaseDatabase.instance
-                              .reference()
-                              .child('myAlerts')
-                              .child('post-${notification.id}')
-                              .child('likes');
+                  : ListView.builder(
+                      itemCount: snapshot.data.length,
+                      padding: EdgeInsets.all(Dimens.margin),
+                      itemBuilder: (context, index) {
+                        final notification = snapshot.data[index];
+                        RxInt currentPostIndex = 0.obs;
+                        currentPostIndex.value = dbController.allPosts
+                            .indexWhere(
+                                (element) => element.postID == notification.id);
 
-                          RxInt currentPostIndex=0.obs;
-                          RxInt currentPostIndexForLikes=0.obs;
-                         currentPostIndex.value  = dbController.allPosts.indexWhere((element) => element.postID == notification.id);
+                        dbController.allPosts[currentPostIndex.value].like.forEach((element) {
+                          print(user.userId);
+                          if(element.userId == user.userId.toString()){
+                            likeStatus.value=true;
+                          }
+                        });
 
-                         RxList allLiked=[].obs;
-                         // dbController.allPosts[currentPostIndex.value].like.forEach((element) {
-                         //   if(element.likeStatus == '1'){
-                         //     allLiked.add(element);
-                         //   }
-                         // });
-                         // allLiked.add(dbController.allPosts[currentPostIndex.value].like.where((value) => value.likeStatus == '1'));
-                         // totalLikes.value=allLiked.length.toString();
 
-                          print(currentPostIndex);
 
-                          return Stack(
-                            children: [
-                              // getTestAllLikes(),
-                              // _getMessageList(context, notification.id),
-                              Card(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: Dimens.margin_medium),
-                                color: theme.colorScheme.surface,
-                                elevation: 0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(
-                                      Dimens.margin_xmedium),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      (notification.image != null &&
-                                              notification.image.isNotEmpty)
-                                          ? Image.network(
-                                              "${AppConstants.imageMessageBaseUrl}${notification.image}",
-                                              height: 200,
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : SizedBox(),
-                                      Spacing.vertical,
-                                      ((notification.title != null &&
-                                                  notification
-                                                      .title.isNotEmpty) ||
-                                              notification.hasPlace())
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                if (notification.hasPlace()) {
-                                                  if (AuthManager
-                                                      .instance.isUserAccount)
-                                                    pushPage(
-                                                        context,
-                                                        VendorDetailPage(
-                                                          place: notification
-                                                              .getPlace(),
-                                                        ));
-                                                }
-                                              },
-                                              child: Text(
-                                                notification.hasPlace()
-                                                    ? notification
-                                                        .getPlace()
-                                                        .placeNameEng
-                                                        .tr()
-                                                    : notification.title.tr(),
-                                                style:
-                                                    theme.textTheme.subtitle1,
-                                                // textAlign: TextAlign.end,
-                                              ),
-                                            )
-                                          : SizedBox(),
-                                      Text(
-                                        notification.body.tr(),
-                                        style: theme.textTheme.bodyText2,
-                                        // textAlign: TextAlign.end,
-                                      ),
-                                      Divider(
-                                        color: Colors.grey,
-                                      ),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          /// like
-                                          BouncingAnim(
-                                            onPress: () {
-                                              likesRef = FirebaseDatabase
-                                                  .instance
-                                                  .reference()
-                                                  .child('myAlerts')
-                                                  .child('post-${notification.id}')
-                                                  .child('likes');
-
-                                              likeFunction(notification.id);
-                                              // print(data);
-                                              // if (data == null) {
-                                              //   likesRef.set({
-                                              //     "userId": "${user.userId}",
-                                              //     "likeStatus": likeStatus
-                                              //   });
-                                              // }
+                        return Stack(
+                          children: [
+                            // getTestAllLikes(),
+                            // _getMessageList(context, notification.id),
+                            Card(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: Dimens.margin_medium),
+                              color: theme.colorScheme.surface,
+                              elevation: 0,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.all(Dimens.margin_xmedium),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    (notification.image != null &&
+                                            notification.image.isNotEmpty)
+                                        ? Image.network(
+                                            "${AppConstants.imageMessageBaseUrl}${notification.image}",
+                                            height: 200,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : SizedBox(),
+                                    Spacing.vertical,
+                                    ((notification.title != null &&
+                                                notification
+                                                    .title.isNotEmpty) ||
+                                            notification.hasPlace())
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              if (notification.hasPlace()) {
+                                                if (AuthManager
+                                                    .instance.isUserAccount)
+                                                  pushPage(
+                                                      context,
+                                                      VendorDetailPage(
+                                                        place: notification
+                                                            .getPlace(),
+                                                      ));
+                                              }
                                             },
-                                            child: Container(
-                                              width: size.width * 0.2,
-                                              padding: EdgeInsets.only(
-                                                  top: 5, bottom: 3),
-                                              child: Obx(
-                                                ()=> Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    likeStatus.value=='0'?Icon(Icons.thumb_up_alt_outlined) :
-                                                    Icon(Icons.thumb_up_alt_rounded),
-                                                    SizedBox(
-                                                      width: 2,
-                                                    ),
-                                                    Center(
-                                                        child: Text(totalLikes.value==0?"": totalLikes.value.toString())),
-                                                  ],
-                                                ),
-                                              ),
+                                            child: Text(
+                                              notification.hasPlace()
+                                                  ? notification
+                                                      .getPlace()
+                                                      .placeNameEng
+                                                      .tr()
+                                                  : notification.title.tr(),
+                                              style: theme.textTheme.subtitle1,
+                                              // textAlign: TextAlign.end,
                                             ),
-                                          ),
+                                          )
+                                        : SizedBox(),
+                                    Text(
+                                      notification.body.tr(),
+                                      style: theme.textTheme.bodyText2,
+                                      // textAlign: TextAlign.end,
+                                    ),
+                                    Divider(
+                                      color: Colors.grey,
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        /// like
+                                        BouncingAnim(
+                                          onPress: () {
+                                            likesRef = FirebaseDatabase.instance
+                                                .reference()
+                                                .child('myAlerts')
+                                                .child(
+                                                    'post-${notification.id}')
+                                                .child('likes');
 
-                                          /// comment
-
-                                          BouncingAnim(
-                                            onPress: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          CommentSection(
-                                                              notification
-                                                                  .id)));
-                                            },
-                                            child: Container(
-                                              width: size.width * 0.25,
-                                              padding: EdgeInsets.only(
-                                                  top: 5, bottom: 3),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                            likeFunction(notification.id);
+                                            // print(data);
+                                            // if (data == null) {
+                                            //   likesRef.set({
+                                            //     "userId": "${user.userId}",
+                                            //     "likeStatus": likeStatus
+                                            //   });
+                                            // }
+                                          },
+                                          child: Container(
+                                            width: size.width * 0.2,
+                                            padding: EdgeInsets.only(
+                                                top: 5, bottom: 3),
+                                            child: Obx(
+                                              () => Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(Icons.message_rounded),
+
+                                                 likeButton(currentPostIndex, notification)?? Icon(Icons.thumb_up_alt_outlined,color: Colors.red,),
+
                                                   SizedBox(
                                                     width: 2,
                                                   ),
-                                                  Obx(
-                                                      ()=> currentPostIndex.value == -1
-                                                          ? Container()
-                                                          : Text("${dbController.allPosts[currentPostIndex.value].comment.length}"),
-                                                  ),
+                                                  Center(
+                                                      child:Obx(
+                                                            () => currentPostIndex.value == -1
+                                                            ? Container()
+                                                            : dbController.allPosts[currentPostIndex.value].like.length == 0
+                                                            ? Container()
+                                                            : Text(
+                                                            "${dbController.allPosts[currentPostIndex.value].like.length}"),
+                                                      ),),
                                                 ],
                                               ),
                                             ),
                                           ),
+                                        ),
 
-                                          /// share
-                                          BouncingAnim(
-                                            onPress: () {
-                                              Share.share(AppBloc.instance
-                                                  .notificationShareMessage(
-                                                      notification));
-                                            },
-                                            child: Container(
-                                              width: size.width * 0.2,
-                                              padding: EdgeInsets.only(
-                                                  top: 5, bottom: 3),
-                                              child: Icon(Icons.share),
+                                        /// comment
+
+                                        BouncingAnim(
+                                          onPress: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        CommentSection(
+                                                            notification.id)));
+                                          },
+                                          child: Container(
+                                            width: size.width * 0.25,
+                                            padding: EdgeInsets.only(
+                                                top: 5, bottom: 3),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.message_rounded),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                // Container(
+                                                //     width: 1,
+                                                //     height: 1,
+                                                //     child: _getlikes(context, notification.id)),
+                                                Obx(
+                                                  () => currentPostIndex.value == -1
+                                                      ? Container()
+                                                      : dbController.allPosts[currentPostIndex.value].comment.length == 0
+                                                          ? Container()
+                                                          : Text(
+                                                              "${dbController.allPosts[currentPostIndex.value].comment.length}"),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                        ),
+
+                                        /// share
+                                        BouncingAnim(
+                                          onPress: () {
+                                            Share.share(AppBloc.instance
+                                                .notificationShareMessage(
+                                                    notification));
+                                          },
+                                          child: Container(
+                                            width: size.width * 0.2,
+                                            padding: EdgeInsets.only(
+                                                top: 5, bottom: 3),
+                                            child: Icon(Icons.share),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
-                              )
-                            ],
-                          );
-                        },
-                      );
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    );
         });
   }
 
+  Widget likeButton(RxInt currentIndex, var notification){
+    bool likeStatus=false;
+    dbController.allPosts[currentIndex.value].like.forEach((element) {
+      if(element.userId == "${user.userId}"){
+        likeStatus=true;
+      }else{
+        likeStatus=false;
+      }
+    });
+
+    return Icon(
+     likeStatus? Icons.thumb_up :Icons.thumb_up_alt_outlined
+    );
+  }
   Future<dynamic> likeFunction(String notificationId) {
     String likeKey;
     String likeStatus;
     var exists;
     likesRef.once().then((snapshot) {
-      var data= snapshot.value;
+      var data = snapshot.value;
       likeKey = "$notificationId" + "-" + "${user.userId}";
-      if(data !=null){
-        likeStatus=data[likeKey]['likeStatus'];
-        if(likeStatus == '0' ){
+      if (data != null) {
+        likeStatus = data[likeKey]['likeStatus'];
+        if (likeStatus == '0') {
           likesRef.child(likeKey).set({
             "userId": "${user.userId}",
             "likeStatus": '1',
             "notificationId": '$notificationId'
           });
-        }
-        else if(likeStatus == '1' ){
+        } else if (likeStatus == '1') {
           likesRef.child(likeKey).remove();
           // likesRef.child(likeKey).set({
           //   "userId": "${user.userId}",
@@ -318,18 +341,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
           //   "notificationId": '$notificationId'
           // });
         }
+      } else {
+        likesRef.child(likeKey).set({
+          "userId": "${user.userId}",
+          "likeStatus": '1',
+          "notificationId": '$notificationId'
+        });
       }
-
-     else {
-       likesRef.child(likeKey).set({
-         "userId": "${user.userId}",
-         "likeStatus": '1',
-         "notificationId": '$notificationId'
-       });
-     }
-
     });
-
 
     // likesRef.once().then((snapshot) {
     //   exists = snapshot.value;
@@ -502,6 +521,60 @@ class _NotificationsPageState extends State<NotificationsPage> {
 //         return Container();
 //       }
 //
+//   );
+// }
+
+//
+// Future getAllLikes(String postId) async {
+//   RxList<Like> likesInfo;
+//   // likesInfo.clear();
+//
+//   var databaserRef = FirebaseDatabase.instance
+//       .reference()
+//       .child('myAlerts')
+//       .child('post-81')
+//       .child('likes');
+//   databaserRef.onValue.listen((event) {
+//     Map commData = event.snapshot.value;
+//      likesInfo=<Like>[].obs;
+//     commData.entries.forEach((element) {
+//       likesInfo.add(Like.fromJson(Map<String, dynamic>.from(element.value)));
+//     });
+//
+//     print(likesInfo);
+//
+//   });
+//
+// }
+//
+// Widget _getlikes(BuildContext context,String postId) {
+//   var commentRef;
+//   Size size = MediaQuery.of(context).size;
+//   commentRef = FirebaseDatabase.instance
+//       .reference()
+//       .child('myAlerts')
+//       .child('post-$postId')
+//       .child('likes');
+//   return FirebaseAnimatedList(
+//     shrinkWrap: true,
+//     // controller: _scrollController,
+//     query: commentRef,
+//     itemBuilder: (context, snapshot, animation, index) {
+//
+//       // final json = snapshot.value as Map<dynamic, dynamic>;
+//       print(snapshot.value['likeStatus']);
+//       if(snapshot.value['likeStatus']=='1'){
+//         totalLikes.value=totalLikes.value+1;
+//       }
+//
+//       return Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Container(
+//           ),
+//         ],
+//       );
+//     },
 //   );
 // }
 }

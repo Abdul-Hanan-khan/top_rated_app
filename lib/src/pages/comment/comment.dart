@@ -70,6 +70,7 @@ class CommentSection extends StatelessWidget {
                       width: 15,
                     ),
                     FloatingActionButton(
+                      onPressed: (){sendMessage();},
                       child: Icon(
                         Icons.send_rounded,
                         color: Colors.orange[200],
@@ -101,8 +102,8 @@ class CommentSection extends StatelessWidget {
         'dateTime': '${DateTime.now()}',
         'body': '${commentCtr.text.tr()}',
         'commentId': '$commentId',
-        // 'sender':'${user.firstName??""+" "+user.lastName??""}'
-        'sender': 'vendor'
+        'sender':'${user.firstName+" "+user.lastName??""}'
+        // 'sender': 'vendor'
       });
 
       commentCtr.clear();
