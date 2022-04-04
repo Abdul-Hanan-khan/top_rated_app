@@ -60,21 +60,21 @@ class HomePageState extends State<HomePage> {
           return _buildBody(context);
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green[700],
-        child: Icon(Icons.language_outlined,),
-        onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>TestingClass()));
-        // Navigator.push(context, MaterialPageRoute(builder: (context)=>TestHome()));
-          // Get.to(TestingClass());
-
-        }
-
-        // => Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (_) => LanguagePage()),
-        // ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.green[700],
+      //   child: Icon(Icons.language_outlined,),
+      //   onPressed: (){
+      //   Navigator.push(context, MaterialPageRoute(builder: (context)=>TestingClass()));
+      //   // Navigator.push(context, MaterialPageRoute(builder: (context)=>TestHome()));
+      //     // Get.to(TestingClass());
+      //
+      //   }
+      //
+      //   // => Navigator.push(
+      //   //   context,
+      //   //   MaterialPageRoute(builder: (_) => LanguagePage()),
+      //   // ),
+      // ),
     );
   }
 
