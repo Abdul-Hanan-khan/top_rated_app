@@ -4,11 +4,13 @@ import 'package:top_rated_app/src/app/app_theme.dart';
 import 'package:top_rated_app/src/sdk/constants/app_constants.dart';
 import 'package:top_rated_app/src/sdk/constants/dimens.dart';
 import 'package:top_rated_app/src/sdk/models/sub_category.dart';
+import 'package:top_rated_app/static_vars.dart';
 
 class SubCategoryItem extends StatelessWidget {
   final SubCategory subCategory;
   final bool isSelected;
   final Function() onClick;
+
 
   const SubCategoryItem({
     Key key,
@@ -55,7 +57,7 @@ class SubCategoryItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Text(
-                subCategory.nameEng.tr(),
+                StaticVars.localeStatus?subCategory.nameAr: subCategory.nameEng.tr(),
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.subtitle2.copyWith(color: color),
               ),

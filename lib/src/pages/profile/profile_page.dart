@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:top_rated_app/static_vars.dart';
 import '../../sdk/constants/app_constants.dart';
 import '../../sdk/constants/dimens.dart';
 import '../../sdk/constants/spacing.dart';
@@ -36,18 +37,21 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-
+// getLocaleStatus();
     initBloc();
   }
 
   changeLocalityStatus(bool localeStatus) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('localeStatus', localeStatus);
+    bool ssss= prefs.getBool("localeStatus");
+    print(ssss);
   }
-  getLocaleStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    status = prefs.getBool('localeStatus');
-  }
+  // getLocaleStatus() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   status = prefs.getBool('localeStatus');
+  //   print(status);
+  // }
 
   initBloc() {
     bloc = new ProfileBloc();
@@ -74,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    getLocaleStatus();
+
     theme = Theme.of(context);
     return Stack(
       children: <Widget>[
@@ -126,6 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 remember: true,
                                 restart: true,
                               );
+                              StaticVars.localeStatus=false;
                               print(status);
                             });
                           },
@@ -134,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 20,
                             decoration: BoxDecoration(
                                 color:
-                                    status ? Colors.transparent : Colors.orange,
+                                    StaticVars.localeStatus ? Colors.transparent : Colors.orange,
                                 borderRadius: BorderRadius.circular(20)),
                             child: Center(
                                 child: Text(
@@ -149,6 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
                           onTap: () {
+                            StaticVars.localeStatus=true;
                             setState(() {
                               changeLocalityStatus(true);
                               status = true;
@@ -165,9 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 45,
                             height: 20,
                             decoration: BoxDecoration(
-                                color: !status
-                                    ? Colors.transparent
-                                    : Colors.orange,
+                                color: !StaticVars.localeStatus ? Colors.transparent : Colors.orange,
                                 borderRadius: BorderRadius.circular(20)),
                             child: Center(
                                 child: Text('Ar',

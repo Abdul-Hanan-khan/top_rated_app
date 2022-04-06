@@ -43,7 +43,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   DatabaseReference likesRef;
   final user = AuthManager.instance.user;
-
+  final place= AuthManager.instance.place;
   @override
   void initState() {
     super.initState();
@@ -102,12 +102,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       itemBuilder: (context, index) {
                         final notification = snapshot.data[index];
                         RxInt currentPostIndex = 0.obs;
-                        currentPostIndex.value = dbController.allPosts
-                            .indexWhere(
-                                (element) => element.postID == notification.id);
+                        currentPostIndex.value = dbController.allPosts.indexWhere((element) => element.postID == notification.id);
 
                         dbController.allPosts[currentPostIndex.value].like.forEach((element) {
                           print(user.userId);
+                          // print(place.id);
                           if(element.userId == user.userId.toString()){
                             likeStatus.value=true;
                           }

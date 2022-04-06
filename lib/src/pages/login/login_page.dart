@@ -4,6 +4,7 @@ import 'package:top_rated_app/src/pages/verify_code/verify_code_page.dart';
 import 'package:top_rated_app/src/sdk/networking/auth_manager.dart';
 import 'package:top_rated_app/src/sdk/utils/widget_utils.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:top_rated_app/static_vars.dart';
 import '../../sdk/constants/app_constants.dart';
 import '../../sdk/constants/dimens.dart';
 import '../../sdk/constants/spacing.dart';
@@ -24,16 +25,27 @@ class _LoginPageState extends State<LoginPage> {
   BuildContext _context;
   LoginBloc bloc;
   bool _isLoading = false;
+  bool localeStatus;
 
   @override
   void initState() {
+    getLocaleStatus();
     super.initState();
     initBloc();
   }
 
   setLoacaleStatus()async{
     SharedPreferences prefs= await SharedPreferences.getInstance();
-    prefs.setBool('localeStatus', false);
+    if(localeStatus == null || localeStatus == false){
+      prefs.setBool('localeStatus', false);
+      StaticVars.localeStatus=localeStatus;
+    }
+  }
+  getLocaleStatus()async{
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    localeStatus= prefs.getBool('localeStatus')??false;
+    StaticVars.localeStatus=localeStatus;
+    print(localeStatus);
   }
 
   initBloc() {

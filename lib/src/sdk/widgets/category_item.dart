@@ -4,6 +4,7 @@ import 'package:top_rated_app/src/app/app_theme.dart';
 import 'package:top_rated_app/src/sdk/constants/app_constants.dart';
 import 'package:top_rated_app/src/sdk/constants/dimens.dart';
 import 'package:top_rated_app/src/sdk/models/category.dart';
+import 'package:top_rated_app/static_vars.dart';
 
 class CategoryItem extends StatelessWidget {
   final bool isSelected;
@@ -11,11 +12,13 @@ class CategoryItem extends StatelessWidget {
 
   final Function() onClick;
 
+
   const CategoryItem({
     Key key,
     @required this.category,
     this.isSelected = false,
     @required this.onClick,
+
   }) : super(key: key);
 
   @override
@@ -75,7 +78,9 @@ class CategoryItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Text(
-                category.nameEng.tr(),
+                StaticVars.localeStatus?
+                category.nameAr.tr()
+                    :category.nameEng.tr(),
                 style: theme.textTheme.subtitle2.copyWith(
                   color: isSelected ? theme.primaryColor : AppColor.primaryTextColor,
                 ),
