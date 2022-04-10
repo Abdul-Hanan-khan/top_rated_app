@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:top_rated_app/src/app/app_theme.dart';
 import 'package:top_rated_app/src/pages/vendor_edit_profile/vendor_edit_profile_page.dart';
 import 'package:top_rated_app/src/pages/vendor_profile/vendor_profile_bloc.dart';
@@ -13,6 +15,8 @@ import 'package:top_rated_app/src/sdk/widgets/screen_progress_loader.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../../static_vars.dart';
+
 class VendorProfilePage extends StatefulWidget {
   @override
   _VendorProfilePageState createState() => new _VendorProfilePageState();
@@ -23,6 +27,7 @@ class _VendorProfilePageState extends State<VendorProfilePage> {
   BuildContext _context;
   VendorProfileBloc bloc;
   bool _isLoading = false;
+  bool status = false;
 
   @override
   void initState() {
@@ -44,6 +49,13 @@ class _VendorProfilePageState extends State<VendorProfilePage> {
     bloc.error.listen((event) {
       UIUtils.showError(_context, event);
     });
+  }
+
+  changeLocalityStatus(bool localeStatus) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('localeStatus', localeStatus);
+    bool ssss = prefs.getBool("localeStatus");
+    print(ssss);
   }
 
   @override
@@ -96,9 +108,91 @@ class _VendorProfilePageState extends State<VendorProfilePage> {
                 children: [
                   Text(
                     "${AuthManager.instance.place.placeNameEng}".tr(),
-                    style: theme.textTheme.headline6.copyWith(color: Colors.black),
+                    style:
+                        theme.textTheme.headline6.copyWith(color: Colors.black),
                   ),
-                  Text("${AuthManager.instance.place.email}".tr(), style: theme.textTheme.subtitle2),
+                  Text("${AuthManager.instance.place.email}".tr(),
+                      style: theme.textTheme.subtitle2),
+                  Container(
+                    margin: EdgeInsets.only(top: 5),
+                    height: 20,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.grey[300],
+                    ),
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                changeLocalityStatus(false);
+                                status = false;
+                                translator.setNewLanguage(
+                                  context,
+                                  newLanguage: 'en',
+                                  remember: true,
+                                  restart: true,
+                                );
+                                StaticVars.localeStatus = false;
+                                print(status);
+                              });
+                            },
+                            child: Container(
+                              width: 45,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: StaticVars.localeStatus
+                                      ? Colors.transparent
+                                      : Colors.orange,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Center(
+                                  child: Text(
+                                'Eng',
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              )),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              StaticVars.localeStatus = true;
+                              setState(() {
+                                changeLocalityStatus(true);
+                                status = true;
+                                translator.setNewLanguage(
+                                  context,
+                                  newLanguage: 'ar',
+                                  remember: true,
+                                  restart: true,
+                                );
+                                print(status);
+                              });
+                            },
+                            child: Container(
+                              width: 45,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: !StaticVars.localeStatus
+                                      ? Colors.transparent
+                                      : Colors.orange,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Center(
+                                  child: Text('Ar',
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold))),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
               AppButton(
@@ -123,7 +217,8 @@ class _VendorProfilePageState extends State<VendorProfilePage> {
                       runSpacing: 16,
                       alignment: WrapAlignment.center,
                       children: [
-                        for (var item in snapshot.data) _buildItem(item.item1, item.item2, item.item3),
+                        for (var item in snapshot.data)
+                          _buildItem(item.item1, item.item2, item.item3),
                       ],
                     );
             }),
@@ -139,7 +234,8 @@ class _VendorProfilePageState extends State<VendorProfilePage> {
         borderRadius: BorderRadius.circular(8),
         color: theme.colorScheme.surface,
       ),
-      padding: EdgeInsets.symmetric(horizontal: Dimens.margin, vertical: Dimens.margin),
+      padding: EdgeInsets.symmetric(
+          horizontal: Dimens.margin, vertical: Dimens.margin),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

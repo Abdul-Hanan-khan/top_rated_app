@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
@@ -207,8 +208,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  likeButton(currentPostIndex,
-                                                          notification,size) ??
+                                                  likeButton(currentPostIndex,notification,size) ??
                                                       Icon(
                                                         Icons
                                                             .thumb_up_alt_outlined,
@@ -258,9 +258,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Container(
-                                                  width: size.width * 0.1,
+                                                  margin: EdgeInsets.only(top: 8),
+                                                  width: size.width * 0.09,
                                                   height: size.height * 0.04,
                                                   padding: EdgeInsets.only(
                                                       top: 5, bottom: 3),
@@ -305,8 +307,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                     notification));
                                           },
                                           child: Container(
-                                            width: size.width * 0.2,
-                                            height: size.height * 0.04,
+                                            margin: EdgeInsets.only(top: 3),
+                                            width: size.width * 0.1,
+                                            height: size.height * 0.035,
                                             padding: EdgeInsets.only(
                                                 top: 5, bottom: 3),
                                             decoration: BoxDecoration(
