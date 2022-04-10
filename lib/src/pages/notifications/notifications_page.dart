@@ -313,7 +313,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       dbController.allPosts[currentIndex.value].like.forEach((element) {
         if (user != null) {
           if (likeStatus == false) {
-            if (element.userId == "${user.userId}") {
+            if (element.userId == "user-${user.userId}") {
               likeStatus = true;
             } else {
               likeStatus = false;
@@ -321,7 +321,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           }
         } else {
           if (likeStatus == false) {
-            if (element.userId == "${place.id}") {
+            if (element.userId == "vendor-${place.id}") {
               likeStatus = true;
             } else {
               likeStatus = false;
@@ -333,7 +333,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
 
     // return Icon(likeStatus ? Icons.thumb_up : Icons.thumb_up_alt_outlined);
-    return likeStatus?    Container(
+    return likeStatus?
+    Container(
       width: size.width * 0.1,
       height: size.height * 0.04,
       padding: EdgeInsets.only(
@@ -364,7 +365,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           if (data[likeKey] == null) {
 
             likesRef.child(likeKey).set({
-              "userId": "${user.userId}",
+              "userId": "user-${user.userId}",
               "likeStatus": '1',
               "notificationId": '$notificationId'
             });
@@ -395,7 +396,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           // create new like
 
           likesRef.child(likeKey).set({
-            "userId": "${user.userId}",
+            "userId": "user-${user.userId}",
             "likeStatus": '1',
             "notificationId": '$notificationId'
           });
@@ -411,7 +412,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           if (data != null) {
             if (data[likeKey] == null) {
               likesRef.child(likeKey).set({
-                "userId": "${place.id}",
+                "userId": "vendor-${place.id}",
                 "likeStatus": '1',
                 "notificationId": '$notificationId'
               });
@@ -424,7 +425,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 likeStatus = '1';
 
                 likesRef.child(likeKey).set({
-                  "userId": "${place.id}",
+                  "userId": "vendor-${place.id}",
                   "likeStatus": '1',
                   "notificationId": '$notificationId'
                 });
@@ -438,7 +439,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
           } else {
 
             likesRef.child(likeKey).set({
-              "userId": "${place.id}",
+              "userId": "vendor-${place.id}",
               "likeStatus": '1',
               "notificationId": '$notificationId'
             });

@@ -84,6 +84,9 @@ class _ProfilePageState extends State<ProfilePage> {
       children: <Widget>[
         Scaffold(
           backgroundColor: theme.backgroundColor,
+          // appBar: AppBar(
+          //   title: Text('Profile',style: TextStyle(color: Colors.grey),),
+          // ),
           body: Builder(
             builder: (context) {
               _context = context;

@@ -42,7 +42,6 @@ class CommentSection extends StatelessWidget {
 
               ///all comments
               Expanded(child: _getMessageList(context)),
-
               /// send message
               Container(
                 padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
