@@ -146,7 +146,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
 
   Widget _buildSubmitButton(BuildContext context) {
     return AppButton(
-      text: "Submit",
+      text: "Submit".tr(),
       onPressed: () async {
         if (await bloc.submitRating(widget.place)) {
           popPage(context);

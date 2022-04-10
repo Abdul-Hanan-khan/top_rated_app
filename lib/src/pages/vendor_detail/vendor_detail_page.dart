@@ -22,6 +22,8 @@ import 'package:top_rated_app/src/sdk/widgets/app_button.dart';
 import 'package:top_rated_app/src/sdk/widgets/screen_progress_loader.dart';
 import 'dart:math' as math;
 
+import 'package:top_rated_app/static_vars.dart';
+
 class VendorDetailPage extends StatefulWidget {
   final Place place;
   VendorDetailPage({@required this.place});
@@ -86,7 +88,7 @@ class _VendorDetailPageState extends State<VendorDetailPage> {
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      title: Text(widget.place.placeNameEng.tr()),
+      title: Text(StaticVars.localeStatus ==false? widget.place.placeNameEng.tr(): widget.place.placeNameAr.tr(),style: TextStyle(color: Colors.grey),),
       leading: WidgetUtils.getAdaptiveBackButton(context),
       actions: [
         StreamBuilder<PlaceDetail>(
@@ -218,7 +220,7 @@ class _VendorDetailPageState extends State<VendorDetailPage> {
                   ),
                   Spacing.vSmall,
                   Text(
-                    "Phone:".tr(),
+                    "Phone".tr()+":",
                     style: theme.textTheme.subtitle2,
                   ),
                   Text(detail.phone.tr() ?? "--"),
@@ -291,7 +293,7 @@ class _VendorDetailPageState extends State<VendorDetailPage> {
               onRatingUpdate: (rating) {},
             ),
             Text(
-              "Based on ${detail.reviewCount} reviews".tr(),
+              "Based on".tr()+"${detail.reviewCount} " + "reviews".tr(),
               style: theme.textTheme.subtitle2,
             ),
             Spacing.vMedium,

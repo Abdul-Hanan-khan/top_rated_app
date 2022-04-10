@@ -157,16 +157,16 @@ class HomePageState extends State<HomePage> {
                     return !snapshot.hasData
                         ? Center(child: CircularProgressIndicator())
                         : VendorsGridView(
-                            snapshot.data,
-                            onItemClick: (item) {
-                              if (AuthManager.instance.isUserAccount)
-                                pushPage(
-                                    context,
-                                    VendorDetailPage(
-                                      place: item,
-                                    ));
-                            },
-                          );
+                      snapshot.data,
+                      onItemClick: (item) {
+                        if (AuthManager.instance.isUserAccount)
+                          pushPage(
+                              context,
+                              VendorDetailPage(
+                                place: item,
+                              ));
+                      },
+                    );
                   }),
             ),
           ),

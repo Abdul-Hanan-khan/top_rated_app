@@ -303,7 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildNameField(BuildContext context) {
     return StrTextField(
       bloc.name,
-      labelText: "Name",
+      labelText: "Name".tr(),
       prefixIcon: Icon(Icons.person),
       readOnly: !_isEditMode,
       border: OutlineInputBorder(),
@@ -314,7 +314,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildEmailField(BuildContext context) {
     return StrTextField(
       bloc.email,
-      labelText: "Email",
+      labelText: "Email".tr(),
       prefixIcon: Icon(Icons.email),
       readOnly: !_isEditMode,
       border: OutlineInputBorder(),
@@ -331,7 +331,7 @@ class _ProfilePageState extends State<ProfilePage> {
             isExpanded: true,
             value: snapshot.data,
             decoration: InputDecoration(
-              labelText: "Gender",
+              labelText: "Gender".tr(),
               prefixIcon: Icon(FontAwesomeIcons.male),
               border: OutlineInputBorder(),
             ),
@@ -356,7 +356,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return TextField(
             enabled: _isEditMode,
             decoration: InputDecoration(
-              labelText: "Date of Birth",
+              labelText: "Date of Birth".tr(),
               isDense: true,
               prefixIcon: Icon(Icons.date_range),
               border: OutlineInputBorder(),
@@ -383,7 +383,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildPhoneField(BuildContext context) {
     return StrTextField(
       bloc.phone,
-      labelText: "Phone",
+      labelText: "Phone".tr(),
       prefixIcon: Icon(Icons.phone),
       readOnly: !_isEditMode,
       border: OutlineInputBorder(),
@@ -395,7 +395,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildAddressField(BuildContext context) {
     return StrTextField(
       bloc.address,
-      labelText: "Address",
+      labelText: "Address".tr(),
       prefixIcon: Icon(Icons.location_history),
       readOnly: !_isEditMode,
       border: OutlineInputBorder(),

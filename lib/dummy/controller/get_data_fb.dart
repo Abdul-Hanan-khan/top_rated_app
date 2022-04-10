@@ -28,41 +28,41 @@ class MyDatabaseController extends GetxController {
     var databaserRef = FirebaseDatabase.instance.reference().child('myAlerts');
     databaserRef.onValue.listen((event) {
       Map commData = event.snapshot.value;
-      List myList = [];
-      commData.length;
 
       allPosts.clear();
+    if(commData != null){
       commData.entries.forEach((element) {
         allPosts.add(AlertPost.fromJson(Map<String, dynamic>.from(element.value)));
       });
+    }
       print(allPosts);
     });
   }
 
 
   /// get all comments backup
-
-  Future getCommentsData() async {
-    dummyComments.clear();
-    isLoading.value = true;
-
-    var databaserRef = FirebaseDatabase.instance
-        .reference()
-        .child('myAlerts')
-        .child('post-81')
-        .child('comments');
-    databaserRef.onValue.listen((event) {
-      Map commData = event.snapshot.value;
-      List myList = [];
-      commData.length;
-
-      commData.entries.forEach((element) {
-        dummyComments
-            .add(Comment.fromJson(Map<String, dynamic>.from(element.value)));
-      });
-      print(dummyComments[0].reply[0].body);
-    });
-  }
+  //
+  // Future getCommentsData() async {
+  //   dummyComments.clear();
+  //   isLoading.value = true;
+  //
+  //   var databaserRef = FirebaseDatabase.instance
+  //       .reference()
+  //       .child('myAlerts')
+  //       .child('post-81')
+  //       .child('comments');
+  //   databaserRef.onValue.listen((event) {
+  //     Map commData = event.snapshot.value;
+  //     List myList = [];
+  //     commData.length;
+  //
+  //     commData.entries.forEach((element) {
+  //       dummyComments
+  //           .add(Comment.fromJson(Map<String, dynamic>.from(element.value)));
+  //     });
+  //     print(dummyComments[0].reply[0].body);
+  //   });
+  // }
 
   // addCommentToFirestore() {
   //   try {

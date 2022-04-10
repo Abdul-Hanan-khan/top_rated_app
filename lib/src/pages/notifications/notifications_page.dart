@@ -39,15 +39,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
   BuildContext _context;
   NotificationsBloc bloc;
 
-
-
   DatabaseReference likesRef;
   final user = AuthManager.instance.user;
-  final place= AuthManager.instance.place;
+  final place = AuthManager.instance.place;
+
   @override
   void initState() {
     super.initState();
-
 
     bloc = new NotificationsBloc();
     bloc.error.listen((event) {
@@ -85,7 +83,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    RxBool likeStatus=false.obs;
+    RxBool likeStatus = false.obs;
     Size size = MediaQuery.of(context).size;
     return StreamBuilder<List<Message>>(
         stream: bloc.notifications,
@@ -102,17 +100,24 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       itemBuilder: (context, index) {
                         final notification = snapshot.data[index];
                         RxInt currentPostIndex = 0.obs;
-                        currentPostIndex.value = dbController.allPosts.indexWhere((element) => element.postID == notification.id);
+                        currentPostIndex.value = dbController.allPosts
+                            .indexWhere(
+                                (element) => element.postID == notification.id);
 
-                        dbController.allPosts[currentPostIndex.value].like.forEach((element) {
-                          print(user.userId);
+                        dbController.allPosts[currentPostIndex.value].like
+                            .forEach((element) {
+                          // print(user.userId);
                           // print(place.id);
-                          if(element.userId == user.userId.toString()){
-                            likeStatus.value=true;
+                          if (user != null) {
+                            if (element.userId == user.userId.toString()) {
+                              likeStatus.value = true;
+                            }
+                          } else {
+                            if (element.userId == place.id.toString()) {
+                              likeStatus.value = true;
+                            }
                           }
                         });
-
-
 
                         return Stack(
                           children: [
@@ -194,7 +199,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                             likeFunction(notification.id);
                                           },
                                           child: Container(
-                                            width: size.width * 0.2,
+                                            width: size.width * 0.13,
                                             padding: EdgeInsets.only(
                                                 top: 5, bottom: 3),
                                             child: Obx(
@@ -202,21 +207,34 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-
-                                                 likeButton(currentPostIndex, notification)?? Icon(Icons.thumb_up_alt_outlined,color: Colors.red,),
-
+                                                  likeButton(currentPostIndex,
+                                                          notification,size) ??
+                                                      Icon(
+                                                        Icons
+                                                            .thumb_up_alt_outlined,
+                                                        color: Colors.red,
+                                                      ),
                                                   SizedBox(
                                                     width: 2,
                                                   ),
                                                   Center(
-                                                      child:Obx(
-                                                            () => currentPostIndex.value == -1
-                                                            ? Container()
-                                                            : dbController.allPosts[currentPostIndex.value].like.length == 0
-                                                            ? Container()
-                                                            : Text(
-                                                            "${dbController.allPosts[currentPostIndex.value].like.length}"),
-                                                      ),),
+                                                    child: Obx(
+                                                      () => currentPostIndex
+                                                                  .value ==
+                                                              -1
+                                                          ? Container()
+                                                          : dbController
+                                                                      .allPosts[
+                                                                          currentPostIndex
+                                                                              .value]
+                                                                      .like
+                                                                      .length ==
+                                                                  0
+                                                              ? Container()
+                                                              : Text(
+                                                                  "${dbController.allPosts[currentPostIndex.value].like.length}"),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -224,7 +242,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         ),
 
                                         /// comment
-
                                         BouncingAnim(
                                           onPress: () {
                                             Navigator.push(
@@ -242,18 +259,35 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Icon(Icons.message_rounded),
-                                                SizedBox(
-                                                  width: 2,
+                                                Container(
+                                                  width: size.width * 0.1,
+                                                  height: size.height * 0.04,
+                                                  padding: EdgeInsets.only(
+                                                      top: 5, bottom: 3),
+                                                  decoration: BoxDecoration(
+                                                      // color: Colors.blue,
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              'assets/icons/comments.png'),
+                                                          fit: BoxFit.contain)),
                                                 ),
+
                                                 // Container(
                                                 //     width: 1,
                                                 //     height: 1,
                                                 //     child: _getlikes(context, notification.id)),
                                                 Obx(
-                                                  () => currentPostIndex.value == -1
+                                                  () => currentPostIndex
+                                                              .value ==
+                                                          -1
                                                       ? Container()
-                                                      : dbController.allPosts[currentPostIndex.value].comment.length == 0
+                                                      : dbController
+                                                                  .allPosts[
+                                                                      currentPostIndex
+                                                                          .value]
+                                                                  .comment
+                                                                  .length ==
+                                                              0
                                                           ? Container()
                                                           : Text(
                                                               "${dbController.allPosts[currentPostIndex.value].comment.length}"),
@@ -272,9 +306,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                           },
                                           child: Container(
                                             width: size.width * 0.2,
+                                            height: size.height * 0.04,
                                             padding: EdgeInsets.only(
                                                 top: 5, bottom: 3),
-                                            child: Icon(Icons.share),
+                                            decoration: BoxDecoration(
+                                                // color: Colors.blue,
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                        'assets/icons/share.png'),
+                                                    fit: BoxFit.contain)),
                                           ),
                                         ),
                                       ],
@@ -290,54 +330,132 @@ class _NotificationsPageState extends State<NotificationsPage> {
         });
   }
 
-  Widget likeButton(RxInt currentIndex, var notification){
-    bool likeStatus=false;
+  Widget likeButton(RxInt currentIndex, var notification,Size size) {
+    bool likeStatus = false;
     dbController.allPosts[currentIndex.value].like.forEach((element) {
-      if(element.userId == "${user.userId}"){
-        likeStatus=true;
-      }else{
-        likeStatus=false;
+      if (user != null) {
+        if (likeStatus == false) {
+          if (element.userId == "${user.userId}") {
+            likeStatus = true;
+          } else {
+            likeStatus = false;
+          }
+        }
+      } else {
+        if (likeStatus == false) {
+          if (element.userId == "${place.id}") {
+            likeStatus = true;
+          } else {
+            likeStatus = false;
+          }
+        }
       }
     });
 
-    return Icon(
-     likeStatus? Icons.thumb_up :Icons.thumb_up_alt_outlined
-    );
+    // return Icon(likeStatus ? Icons.thumb_up : Icons.thumb_up_alt_outlined);
+    return likeStatus?    Container(
+      width: size.width * 0.1,
+      height: size.height * 0.04,
+      padding: EdgeInsets.only(
+          top: 5, bottom: 3),
+      decoration: BoxDecoration(
+        // color: Colors.blue,
+          image: DecorationImage(
+              image: AssetImage(
+                  'assets/icons/like.png'),
+              fit: BoxFit.contain)),
+    ): Icon(Icons.thumb_up_alt_outlined);
   }
+
   Future<dynamic> likeFunction(String notificationId) {
+    // like function clear for both user and vendor
+
     String likeKey;
     String likeStatus;
     var exists;
-    likesRef.once().then((snapshot) {
-      var data = snapshot.value;
-      likeKey = "$notificationId" + "-" + "${user.userId}";
-      if (data != null) {
-        likeStatus = data[likeKey]['likeStatus'];
-        if (likeStatus == '0') {
+    if (user != null) {
+      /// Normal user operations
+      likesRef.once().then((snapshot) {
+        var data = snapshot.value;
+        likeKey = "$notificationId" + "-" + "${user.userId}";
+        if (data != null) {
+          if (data[likeKey] == null) {
+            likesRef.child(likeKey).set({
+              "userId": "${user.userId}",
+              "likeStatus": '1',
+              "notificationId": '$notificationId'
+            });
+            // likeStatus = data[likeKey]['likeStatus'];
+            // print('getting null');
+          } else {
+            likeStatus = data[likeKey]['likeStatus'];
+            if (likeStatus == '0') {
+              // update like
+              likeStatus = '1';
+              likesRef.child(likeKey).set({
+                "userId": "${user.userId}",
+                "likeStatus": '1',
+                "notificationId": '$notificationId'
+              });
+            } else if (likeStatus == '1') {
+              likeStatus = '0';
+              //delete like
+              likesRef.child(likeKey).remove();
+            }
+          }
+        } else {
+          // create new like
           likesRef.child(likeKey).set({
             "userId": "${user.userId}",
             "likeStatus": '1',
             "notificationId": '$notificationId'
           });
-        } else if (likeStatus == '1') {
-          likesRef.child(likeKey).remove();
-          // likesRef.child(likeKey).set({
-          //   "userId": "${user.userId}",
-          //   "likeStatus": '0',
-          //   "notificationId": '$notificationId'
-          // });
         }
-      } else {
-        likesRef.child(likeKey).set({
-          "userId": "${user.userId}",
-          "likeStatus": '1',
-          "notificationId": '$notificationId'
-        });
-      }
-    });
+      });
+    } else {
+      /// Vendor operations
+      likesRef.once().then(
+        (snapshot) {
+          var data = snapshot.value;
+          likeKey = "$notificationId" + "-" + "${place.id}";
+          if (data != null) {
+            if (data[likeKey] == null) {
+              likesRef.child(likeKey).set({
+                "userId": "${place.id}",
+                "likeStatus": '1',
+                "notificationId": '$notificationId'
+              });
+            } else {
+              likeStatus = data[likeKey]['likeStatus'];
 
+              if (likeStatus == '0') {
+                likeStatus = '1';
+                likesRef.child(likeKey).set({
+                  "userId": "${place.id}",
+                  "likeStatus": '1',
+                  "notificationId": '$notificationId'
+                });
+              } else if (likeStatus == '1') {
+                likeStatus = '0';
+                likesRef.child(likeKey).remove();
+                // likesRef.child(likeKey).set({
+                //   "userId": "${user.userId}",
+                //   "likeStatus": '0',
+                //   "notificationId": '$notificationId'
+                // });
+              }
+            }
+          } else {
+            likesRef.child(likeKey).set({
+              "userId": "${place.id}",
+              "likeStatus": '1',
+              "notificationId": '$notificationId'
+            });
+          }
+        },
+      );
+    }
 
     return exists;
   }
-
 }

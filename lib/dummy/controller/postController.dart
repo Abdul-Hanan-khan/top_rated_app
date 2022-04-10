@@ -11,7 +11,6 @@ class NotificationController extends GetxController {
 
   void calculateComments(var notification) {
 
-
     currentPostIndex.value = dbController.allPosts.indexWhere((element) => element.postID == notification.id);
     if (currentPostIndex.value == -1) {
       totalComments.value = 0;

@@ -289,7 +289,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
                       }
                     },
                     child: Text(
-                      "Send",
+                      "Send".tr(),
                       style: theme.textTheme.subtitle1.copyWith(color: theme.primaryColor),
                     ),
                   ),

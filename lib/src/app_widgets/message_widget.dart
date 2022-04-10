@@ -30,7 +30,7 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = AuthManager.instance.user;
+
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(left: 1, top: 5, right: 1, bottom: 2),
@@ -74,7 +74,7 @@ class MessageWidget extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.only(top: 4, left: 4),
                             child: Text(
-                              'Reply',
+                              'Reply'.tr(),
                               style:
                               TextStyle(fontSize: 15, color: Colors.orangeAccent),
                             ),
@@ -219,6 +219,8 @@ class MessageWidget extends StatelessWidget {
 
   sendReplyCommentMessage(
       BuildContext context, String postIdForReply, String sender) {
+    final user = AuthManager.instance.user;
+    final place = AuthManager.instance.place;
     DatabaseReference replyCommentRef;
     replyCommentRef = FirebaseDatabase.instance
         .reference()

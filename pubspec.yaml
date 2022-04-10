@@ -87,9 +87,11 @@ flutter:
     - assets/images/review.png
     - assets/images/reviews.png
     - assets/images/reviewsapp.png
+    - assets/icons/
     - assets/locales/en.json
     - assets/locales/fa.json
     - assets/locales/ar.json
+    -
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

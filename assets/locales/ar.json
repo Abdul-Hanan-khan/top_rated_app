@@ -2,8 +2,8 @@
   "welcome": "أهلا بك",
   "language": "لغة",
   "Comment": "تعليق",
-  "Followers": "متابعون",
-  "Following": "التالي",
+  "Followers": "متابع",
+  "Following": "أتابع",
   "Email": "بريد الالكتروني",
   "Password": "كلمة المرور",
 
@@ -74,5 +74,25 @@
   "Real Estates": "عقارات",
   "ICT": "تكنولوجيا",
   "Sales": "مبيعات",
-  "Services": "خدمات"
+  "Services": "خدمات",
+
+
+  "Edit Profile": "تعديل الملف الشخصي",
+  "Name": "اسم",
+  "Gender": "الجنس",
+  "Date of Birth": "تاريخ الميلاد",
+  "Phone": "هاتف",
+  "Address": "عنوان",
+  "Add Review": "إضافة مراجعة",
+  "Reply": "رد",
+  "Write message": "اكتب رسالة",
+  "Save": "يحفظ",
+  "Based on": "مرتكز على",
+  "reviews": "مراجعات",
+  "Logout": " خروج",
+  "Do you want to logout?": "هل ترغب بالخروج؟",
+  "Forgot Password": "هل نسيت كلمة السر",
+  "Yes": "نعم",
+  "No": "نعم",
+  "Submit": "أرسل"
 }

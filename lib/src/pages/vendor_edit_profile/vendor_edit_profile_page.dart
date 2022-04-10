@@ -198,7 +198,7 @@ class _VendorEditProfilePageState extends State<VendorEditProfilePage> {
     return StrTextField(
       bloc.address,
       onChanged: bloc.onAddressChanged,
-      hintText: "Address",
+      hintText: "Address".tr(),
     );
   }
 
@@ -206,7 +206,7 @@ class _VendorEditProfilePageState extends State<VendorEditProfilePage> {
     return StrTextField(
       bloc.phone,
       onChanged: bloc.onPhoneChanged,
-      hintText: "Phone",
+      hintText: "Phone".tr(),
       keyboardType: TextInputType.phone,
     );
   }

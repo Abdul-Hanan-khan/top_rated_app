@@ -19,6 +19,7 @@ class CommentSection extends StatelessWidget {
   var repCommentCtr = TextEditingController();
   DatabaseReference commentRef;
   final user = AuthManager.instance.user;
+  final place = AuthManager.instance.place;
 
   ScrollController _scrollController = ScrollController();
 
@@ -100,22 +101,43 @@ class CommentSection extends StatelessWidget {
         .child('myAlerts')
         .child('post-$postId')
         .child('comments');
-    try {
-      print(user);
-      String commentId = commentRef.push().key;
-      commentRef.child(commentId).set({
-        'postId': "post-$postId",
-        'dateTime': '${DateTime.now()}',
-        'body': '${commentCtr.text.tr()}',
-        'commentId': '$commentId',
-        'sender': '${user.firstName + " " + user.lastName ?? ""}'
-        // 'sender': 'vendor'
-      });
 
-      commentCtr.clear();
-    } on Exception catch (_) {
-      print('Failed to comment');
+    if (user != null){
+      try {
+        print(user);
+        String commentId = commentRef.push().key;
+        commentRef.child(commentId).set({
+          'postId': "post-$postId",
+          'dateTime': '${DateTime.now()}',
+          'body': '${commentCtr.text.tr()}',
+          'commentId': '$commentId',
+          'sender': '${user.firstName + " " + user.lastName ?? ""}'
+          // 'sender': 'vendor'
+        });
+
+        commentCtr.clear();
+      } on Exception catch (_) {
+        print('Failed to comment');
+      }
+    }else{
+      try {
+        // print(user);
+        String commentId = commentRef.push().key;
+        commentRef.child(commentId).set({
+          'postId': "post-$postId",
+          'dateTime': '${DateTime.now()}',
+          'body': '${commentCtr.text.tr()}',
+          'commentId': '$commentId',
+          'sender': '${place.placeNameEng}'
+          // 'sender': 'vendor'
+        });
+
+        commentCtr.clear();
+      } on Exception catch (_) {
+        print('Failed to comment');
+      }
     }
+
     // commentRef.key;
   }
 

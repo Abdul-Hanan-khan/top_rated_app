@@ -5,6 +5,7 @@ import 'package:top_rated_app/src/sdk/constants/dimens.dart';
 import 'package:top_rated_app/src/sdk/constants/spacing.dart';
 import 'package:top_rated_app/src/sdk/models/place.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:top_rated_app/static_vars.dart';
 
 class VendorsGridView extends StatelessWidget {
   final List<Place> places;
@@ -60,8 +61,8 @@ class VendorItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    place.placeNameEng.tr(),
+                   Text(
+                     StaticVars.localeStatus ==false?   place.placeNameEng.tr():place.placeNameAr.tr(),
                     style: Theme.of(context).textTheme.subtitle1,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,

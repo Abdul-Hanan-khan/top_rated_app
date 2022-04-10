@@ -245,7 +245,7 @@ class _MainPageState extends State<MainPage> {
     UIUtils.showAdaptiveConfirmationDialog(
       _context,
       "Logout",
-      "Do you want to logout?",
+      "Do you want to logout?".tr(),
       onPositiveAction: () {
         AuthManager.instance.logout();
         Navigator.of(_context).pushReplacementNamed(Routes.login);
