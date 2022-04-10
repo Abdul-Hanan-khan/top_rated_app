@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:top_rated_app/dummy/controller/get_data_fb.dart';
+import 'package:top_rated_app/post_controller/controller/get_data_fb.dart';
 import 'package:top_rated_app/src/app/app_bloc.dart';
 import 'package:top_rated_app/src/app/app_theme.dart';
 import 'package:top_rated_app/src/app_widgets/bounce_anim.dart';
@@ -101,24 +101,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       itemBuilder: (context, index) {
                         final notification = snapshot.data[index];
                         RxInt currentPostIndex = 0.obs;
+
+                        createPostReference(notificationId: notification.id);
+
+
                         currentPostIndex.value = dbController.allPosts
                             .indexWhere(
                                 (element) => element.postID == notification.id);
 
-                        dbController.allPosts[currentPostIndex.value].like
-                            .forEach((element) {
-                          // print(user.userId);
-                          // print(place.id);
-                          if (user != null) {
-                            if (element.userId == user.userId.toString()) {
-                              likeStatus.value = true;
-                            }
-                          } else {
-                            if (element.userId == place.id.toString()) {
-                              likeStatus.value = true;
-                            }
-                          }
-                        });
 
                         return Stack(
                           children: [
@@ -219,17 +209,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                   ),
                                                   Center(
                                                     child: Obx(
-                                                      () => currentPostIndex
-                                                                  .value ==
-                                                              -1
+                                                      () => currentPostIndex.value < 0  ||   dbController.allPosts.isEmpty || dbController.allPosts==null
                                                           ? Container()
-                                                          : dbController
-                                                                      .allPosts[
-                                                                          currentPostIndex
-                                                                              .value]
-                                                                      .like
-                                                                      .length ==
-                                                                  0
+                                                          : dbController.allPosts[currentPostIndex.value].like.length == 0
                                                               ? Container()
                                                               : Text(
                                                                   "${dbController.allPosts[currentPostIndex.value].like.length}"),
@@ -279,17 +261,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                                 //     height: 1,
                                                 //     child: _getlikes(context, notification.id)),
                                                 Obx(
-                                                  () => currentPostIndex
-                                                              .value ==
-                                                          -1
+                                                  () => currentPostIndex.value < 0
                                                       ? Container()
-                                                      : dbController
-                                                                  .allPosts[
-                                                                      currentPostIndex
-                                                                          .value]
-                                                                  .comment
-                                                                  .length ==
-                                                              0
+                                                      : dbController.allPosts[currentPostIndex.value].comment.length == 0 ||   dbController.allPosts.isEmpty || dbController.allPosts==null
                                                           ? Container()
                                                           : Text(
                                                               "${dbController.allPosts[currentPostIndex.value].comment.length}"),
@@ -335,25 +309,28 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   Widget likeButton(RxInt currentIndex, var notification,Size size) {
     bool likeStatus = false;
-    dbController.allPosts[currentIndex.value].like.forEach((element) {
-      if (user != null) {
-        if (likeStatus == false) {
-          if (element.userId == "${user.userId}") {
-            likeStatus = true;
-          } else {
-            likeStatus = false;
+    if(currentIndex !=-1){
+      dbController.allPosts[currentIndex.value].like.forEach((element) {
+        if (user != null) {
+          if (likeStatus == false) {
+            if (element.userId == "${user.userId}") {
+              likeStatus = true;
+            } else {
+              likeStatus = false;
+            }
+          }
+        } else {
+          if (likeStatus == false) {
+            if (element.userId == "${place.id}") {
+              likeStatus = true;
+            } else {
+              likeStatus = false;
+            }
           }
         }
-      } else {
-        if (likeStatus == false) {
-          if (element.userId == "${place.id}") {
-            likeStatus = true;
-          } else {
-            likeStatus = false;
-          }
-        }
-      }
-    });
+      });
+    }
+
 
     // return Icon(likeStatus ? Icons.thumb_up : Icons.thumb_up_alt_outlined);
     return likeStatus?    Container(
@@ -371,8 +348,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   Future<dynamic> likeFunction(String notificationId) {
-    // like function clear for both user and vendor
-
+    DatabaseReference createPostRef = FirebaseDatabase.instance
+        .reference()
+        .child('myAlerts')
+        .child('post-$notificationId');
     String likeKey;
     String likeStatus;
     var exists;
@@ -383,11 +362,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
         likeKey = "$notificationId" + "-" + "${user.userId}";
         if (data != null) {
           if (data[likeKey] == null) {
+
             likesRef.child(likeKey).set({
               "userId": "${user.userId}",
               "likeStatus": '1',
               "notificationId": '$notificationId'
             });
+
+
             // likeStatus = data[likeKey]['likeStatus'];
             // print('getting null');
           } else {
@@ -395,11 +377,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
             if (likeStatus == '0') {
               // update like
               likeStatus = '1';
+
               likesRef.child(likeKey).set({
                 "userId": "${user.userId}",
                 "likeStatus": '1',
                 "notificationId": '$notificationId'
               });
+
+
             } else if (likeStatus == '1') {
               likeStatus = '0';
               //delete like
@@ -408,11 +393,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
           }
         } else {
           // create new like
+
           likesRef.child(likeKey).set({
             "userId": "${user.userId}",
             "likeStatus": '1',
             "notificationId": '$notificationId'
           });
+
         }
       });
     } else {
@@ -428,37 +415,50 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 "likeStatus": '1',
                 "notificationId": '$notificationId'
               });
+
+
             } else {
               likeStatus = data[likeKey]['likeStatus'];
 
               if (likeStatus == '0') {
                 likeStatus = '1';
+
                 likesRef.child(likeKey).set({
                   "userId": "${place.id}",
                   "likeStatus": '1',
                   "notificationId": '$notificationId'
                 });
+
+
               } else if (likeStatus == '1') {
                 likeStatus = '0';
                 likesRef.child(likeKey).remove();
-                // likesRef.child(likeKey).set({
-                //   "userId": "${user.userId}",
-                //   "likeStatus": '0',
-                //   "notificationId": '$notificationId'
-                // });
               }
             }
           } else {
+
             likesRef.child(likeKey).set({
               "userId": "${place.id}",
               "likeStatus": '1',
               "notificationId": '$notificationId'
             });
+
+
           }
         },
       );
     }
 
     return exists;
+  }
+
+  createPostReference({String notificationId}){
+    DatabaseReference createPostRef = FirebaseDatabase.instance
+        .reference()
+        .child('myAlerts')
+        .child('post-$notificationId');
+    createPostRef.update({
+      'postId': "$notificationId"
+    });
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:top_rated_app/dummy/controller/get_data_fb.dart';
+import 'package:top_rated_app/post_controller/controller/get_data_fb.dart';
 import 'package:top_rated_app/src/pages/login/login_page.dart';
 import 'package:top_rated_app/src/pages/main/main_page.dart';
 import 'package:top_rated_app/src/pages/register/register_page.dart';

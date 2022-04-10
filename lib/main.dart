@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:top_rated_app/dummy/controller/get_data_fb.dart';
+
 
 import 'src/app/app.dart';
 import 'package:get/get.dart';
@@ -22,13 +22,14 @@ void main() async {
 
   NotificationsHelper.instance.init();
   Firebase.initializeApp();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]).then((_){
-    runApp(
-      LocalizedApp(
-        child: MyApp(),
-        // child: TestHome(),
-      ),
-    );
-  });
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]).then((_){
+  //
+  // });
+  runApp(
+    LocalizedApp(
+      child: MyApp(),
+      // child: TestHome(),
+    ),
+  );
 
 }

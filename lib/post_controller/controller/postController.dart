@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:top_rated_app/dummy/controller/get_data_fb.dart';
+import 'package:top_rated_app/post_controller/controller/get_data_fb.dart';
 
 class NotificationController extends GetxController {
   MyDatabaseController dbController = Get.find();

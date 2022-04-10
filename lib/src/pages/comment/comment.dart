@@ -75,7 +75,7 @@ class CommentSection extends StatelessWidget {
                             commentCtr.text.trim().isEmpty ||
                             commentCtr.text.trim() == null) {
                         } else {
-                          sendMessage();
+                          sendCommentMessage();
                         }
                       },
                       child: Icon(
@@ -141,15 +141,15 @@ class CommentSection extends StatelessWidget {
     // commentRef.key;
   }
 
-  Future sendMessage() async {
-    commentRef = FirebaseDatabase.instance
-        .reference()
-        .child('myAlerts')
-        .child('post-$postId');
-    commentRef.update({'postId': "$postId"}).then((value) {
-      sendCommentMessage();
-    });
-  }
+  // Future sendMessage() async {
+  //   commentRef = FirebaseDatabase.instance
+  //       .reference()
+  //       .child('myAlerts')
+  //       .child('post-$postId');
+  //   commentRef.update({'postId': "$postId"}).then((value) {
+  //     sendCommentMessage();
+  //   });
+  // }
 
   Widget _getMessageList(BuildContext context) {
     Size size = MediaQuery.of(context).size;

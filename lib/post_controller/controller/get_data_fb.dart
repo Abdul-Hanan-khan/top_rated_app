@@ -7,14 +7,10 @@ import 'package:get/get.dart';
 import 'package:top_rated_app/src/sdk/models/alerts_model_firebase.dart';
 
 class MyDatabaseController extends GetxController {
-  DatabaseReference reference;
-  DatabaseReference firestoreRef;
   RxBool isLoading = false.obs;
   RxList<AlertPost> allPosts = <AlertPost>[].obs;
-  RxList<Comment> postComments = <Comment>[].obs;
 
-  List<Comment> dummyComments = <Comment>[].obs;
-  List<AlertPost> dummyAlertPost=<AlertPost>[];
+
 
 
 
@@ -25,8 +21,8 @@ class MyDatabaseController extends GetxController {
     allPosts.clear();
     isLoading.value = true;
 
-    var databaserRef = FirebaseDatabase.instance.reference().child('myAlerts');
-    databaserRef.onValue.listen((event) {
+    var databaseRef = FirebaseDatabase.instance.reference().child('myAlerts');
+    databaseRef.onValue.listen((event) {
       Map commData = event.snapshot.value;
 
       allPosts.clear();
@@ -104,30 +100,30 @@ class MyDatabaseController extends GetxController {
   //   }
   // }
 
-  getAllLikes() {
-    Comment replyModel;
-    try {
-      CollectionReference reference = FirebaseFirestore.instance
-          .collection('myAlerts')
-          .doc('post-80')
-          .collection('comments');
-      reference.snapshots().listen((querySnapshot) {
-        dummyComments.clear();
-        querySnapshot.docChanges.forEach((change) {
-          var data = change.doc;
-          replyModel =
-              Comment.fromJson(Map<String, dynamic>.from(change.doc.data()));
-          dummyComments.add(replyModel);
-        });
-        for (int i = 0; i < dummyComments.length; i++) {
-          print(dummyComments[i].sender);
-        }
-        print(dummyComments);
-        print(replyModel.sender);
-        // List rawList=replyModel;
-      });
-    } catch (e) {
-      print("Exception on Firestore get = $e");
-    }
-  }
+  // getAllLikes() {
+  //   Comment replyModel;
+  //   try {
+  //     CollectionReference reference = FirebaseFirestore.instance
+  //         .collection('myAlerts')
+  //         .doc('post-80')
+  //         .collection('comments');
+  //     reference.snapshots().listen((querySnapshot) {
+  //       dummyComments.clear();
+  //       querySnapshot.docChanges.forEach((change) {
+  //         var data = change.doc;
+  //         replyModel =
+  //             Comment.fromJson(Map<String, dynamic>.from(change.doc.data()));
+  //         dummyComments.add(replyModel);
+  //       });
+  //       for (int i = 0; i < dummyComments.length; i++) {
+  //         print(dummyComments[i].sender);
+  //       }
+  //       print(dummyComments);
+  //       print(replyModel.sender);
+  //       // List rawList=replyModel;
+  //     });
+  //   } catch (e) {
+  //     print("Exception on Firestore get = $e");
+  //   }
+  // }
 }

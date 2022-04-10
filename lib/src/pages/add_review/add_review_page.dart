@@ -12,6 +12,7 @@ import 'package:top_rated_app/src/sdk/utils/widget_utils.dart';
 import 'package:top_rated_app/src/sdk/widgets/app_button.dart';
 import 'package:top_rated_app/src/sdk/widgets/screen_progress_loader.dart';
 import 'package:top_rated_app/src/sdk/widgets/stream_text_field.dart';
+import 'package:top_rated_app/static_vars.dart';
 
 class AddReviewPage extends StatefulWidget {
   final Place place;
@@ -78,7 +79,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text("Rate The Place".tr()),
+      title: Text("Rate The Place".tr(),style: TextStyle(color: Colors.grey),),
       leading: WidgetUtils.getAdaptiveBackButton(context),
     );
   }
@@ -108,7 +109,7 @@ class _AddReviewPageState extends State<AddReviewPage> {
           Spacing.vertical,
           StrTextField(
             bloc.review,
-            hintText: "What's the reason behind your ratings?",
+            hintText: "What's the reason behind your ratings?".tr(),
             onChanged: bloc.onReviewChanged,
             maxLines: 6,
           ),
@@ -123,8 +124,8 @@ class _AddReviewPageState extends State<AddReviewPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          type.nameEng.tr(),
+         Text(
+         StaticVars.localeStatus?type.nameAr: type.nameEng.tr(),
           style: theme.textTheme.subtitle1,
         ),
         RatingBar.builder(
