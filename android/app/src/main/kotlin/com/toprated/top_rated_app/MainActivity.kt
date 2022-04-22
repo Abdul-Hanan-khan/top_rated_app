@@ -1,4 +1,4 @@
-package com.toprated.top_rated_app
+package com.toprated.bh
 
 import io.flutter.embedding.android.FlutterActivity
 

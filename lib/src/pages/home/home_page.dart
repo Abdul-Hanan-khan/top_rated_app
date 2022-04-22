@@ -36,10 +36,10 @@ class HomePageState extends State<HomePage> {
     super.initState();
     bloc = new HomeBloc();
     bloc.error.listen((event) {
-      UIUtils.showAdaptiveDialog(_context, "Error", event);
+      UIUtils.showAdaptiveDialog(_context, "Error".tr(), event);
     });
     bloc.exception.listen((event) {
-      UIUtils.showAdaptiveDialog(_context, "Error", event);
+      UIUtils.showAdaptiveDialog(_context, "Error".tr(), event);
     });
   }
 
@@ -198,7 +198,7 @@ class HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Sort by Rating:".tr()),
+                        Text("Sort by Rating".tr()+":"),
                         StreamBuilder<bool>(
                             stream: bloc.sortByRating,
                             initialData: true,
@@ -213,7 +213,7 @@ class HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Area:".tr()),
+                        Text("Area".tr()+":"),
                         StreamBuilder<String>(
                             stream: bloc.selectCity,
                             builder: (context, snapshot) {

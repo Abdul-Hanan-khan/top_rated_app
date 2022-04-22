@@ -93,8 +93,15 @@
   "Do you want to logout?": "هل ترغب بالخروج؟",
   "Forgot Password": "هل نسيت كلمة السر",
   "Yes": "نعم",
-  "No": "نعم",
+  "No": "لا",
   "Submit": "أرسل",
   "Rate The Place": "قيم المكان",
-  "What's the reason behind your ratings?": "ما هو سبب تقييمك هذا؟"
+  "What's the reason behind your ratings?": "ما هو سبب تقييمك هذا؟",
+
+  "Sort": "فرز",
+  "Clear": "مسح",
+  "Apply": "طبق",
+  "Error": "خطأ",
+  "Area": "المنطقة",
+  "Sort by Rating": "فرز بحسب التقييم"
 }

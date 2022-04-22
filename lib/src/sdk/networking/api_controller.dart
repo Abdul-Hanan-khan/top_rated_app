@@ -543,6 +543,7 @@ class ApiController {
       response = await _provider.follow(followerId, followingId, isFollow);
       if (response.statusCode >= ApiStatusCode.OK && response.statusCode <= ApiStatusCode.ERROR) {
         final parsedJson = json.decode(response.body);
+        print(parsedJson);
         final res = _handle(parsedJson);
         if (res.item1 == ApiStatusCode.SUCCESS) {
           return true;

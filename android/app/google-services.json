@@ -1,76 +1,47 @@
 {
   "project_info": {
-    "project_number": "160507901683",
-    "firebase_url": "https://kkkk-8aedc-default-rtdb.firebaseio.com",
-    "project_id": "kkkk-8aedc",
-    "storage_bucket": "kkkk-8aedc.appspot.com"
+    "project_number": "875981400905",
+    "firebase_url": "https://toprated-a9ce7.firebaseio.com",
+    "project_id": "toprated-a9ce7",
+    "storage_bucket": "toprated-a9ce7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:160507901683:android:4b00a46924ee94e841a986",
+        "mobilesdk_app_id": "1:875981400905:android:ef30d5b6c1f9e448",
         "android_client_info": {
-          "package_name": "com.raywenderlich.RayChat"
+          "package_name": "com.toprated.bh"
         }
       },
       "oauth_client": [
         {
-          "client_id": "160507901683-mt2j0ouvdc00dsvugmp0o73ifo69uks9.apps.googleusercontent.com",
+          "client_id": "875981400905-0enrqqsr2nkfok6vrhmpa3kfq172qm8v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCtSiNqPIkZQ_i_9-yL-ytWY1BWRT5t6fs"
+          "current_key": "AIzaSyDvcNXou31JUxpDAuub1T1Xt8Aefcydkr8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "160507901683-mt2j0ouvdc00dsvugmp0o73ifo69uks9.apps.googleusercontent.com",
+              "client_id": "875981400905-0enrqqsr2nkfok6vrhmpa3kfq172qm8v.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "875981400905-vg8uf2r9084q8la3g8jre8a88hhmklgr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.toprated.bh"
+              }
             }
           ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:160507901683:android:6bbb5982497ce5e541a986",
-        "android_client_info": {
-          "package_name": "com.toprated.top_rated_app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "160507901683-p18d4d9551fjcpsmrq47l0vfbeite9v4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.toprated.top_rated_app",
-            "certificate_hash": "fc23f2d6562acb799c07cd871117756ec761056f"
-          }
-        },
-        {
-          "client_id": "160507901683-mt2j0ouvdc00dsvugmp0o73ifo69uks9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCtSiNqPIkZQ_i_9-yL-ytWY1BWRT5t6fs"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "160507901683-mt2j0ouvdc00dsvugmp0o73ifo69uks9.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
+      "admob_app_id": "ca-app-pub-3868789848958850~3248714136"
     }
   ],
   "configuration_version": "1"

@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     bloc.exception.listen((event) {
-      UIUtils.showAdaptiveDialog(_context, "Error", event);
+      UIUtils.showAdaptiveDialog(_context, "Error".tr(), event);
     });
     bloc.error.listen((event) {
       UIUtils.showError(_context, event);

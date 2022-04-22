@@ -28,10 +28,10 @@ class _FollowersPageState extends State<FollowersPage> {
     super.initState();
     bloc = new FollowersBloc(widget.isFollowers);
     bloc.error.listen((event) {
-      UIUtils.showAdaptiveDialog(_context, "Error", event);
+      UIUtils.showAdaptiveDialog(_context, "Error".tr(), event);
     });
     bloc.exception.listen((event) {
-      UIUtils.showAdaptiveDialog(_context, "Error", event);
+      UIUtils.showAdaptiveDialog(_context, "Error".tr(), event);
     });
   }
 

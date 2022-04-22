@@ -137,6 +137,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     return AppButton(
       text: isFollowing ? "Unfollow" : "Follow",
       onPressed: () {
+
         bloc.follow(!isFollowing);
       },
     );

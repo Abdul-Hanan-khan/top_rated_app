@@ -38,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
     });
 
     bloc.exception.listen((event) {
-      UIUtils.showAdaptiveDialog(_context, "Error", event);
+      UIUtils.showAdaptiveDialog(_context, "Error".tr(), event);
     });
     bloc.error.listen((event) {
       UIUtils.showError(_context, event);

@@ -73,7 +73,7 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text("Top Rated".tr()),
+      title: Text("Top Rated".tr(),style: TextStyle(color: Colors.grey),),
       leading: Container(
         padding: EdgeInsets.all(10),
         child: Image.asset(

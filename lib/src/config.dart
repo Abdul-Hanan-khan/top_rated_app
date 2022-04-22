@@ -6,7 +6,7 @@ final String _stageBaseUrl = "http://www.topratedworld.com/toprated/AppApi/api";
 
 class Config {
   static const APP_NAME = "Top Rated";
-  static const APP_ID = "com.toprated.top_rated_app";
+  static const APP_ID = "com.toprated.bh";
   static const bool _IS_LIVE = true;
   static const bool _LOG_INFO_DATA = true;
 
